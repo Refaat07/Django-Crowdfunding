@@ -24,13 +24,18 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div
+          class="collapse navbar-collapse d-flex justify-content-between"
+          id="navbarSupportedContent"
+        >
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a class="nav-link fw-bold active" aria-current="page">Home</a>
             </li>
+          </ul>
+          <ul class="navbar-nav mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link fw-bold">All Books</a>
+              <a class="nav-link fw-bold" href="{% url 'login' %}">Login</a>
             </li>
           </ul>
         </div>
