@@ -5,5 +5,5 @@ from django.urls import reverse
 
 # Create your views here.
 
-def entery_point(request):
+def entry_point(request):
     return render(request, 'projects/entry_point.html')

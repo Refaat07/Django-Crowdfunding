@@ -1,7 +1,7 @@
 from django.urls import path , include
 
-from projects.views import entery_point
+from projects.views import entry_point
 
 urlpatterns = [
-    path('', entery_point, name='entery_point'),
+    path('', entry_point, name='entry_point'),
 ]
