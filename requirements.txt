@@ -1,3 +1,5 @@
 django
 mysql-connector-python
 pillow
+python-dotenv
+six
