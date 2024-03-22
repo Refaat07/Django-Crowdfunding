@@ -6,15 +6,17 @@ import re
 
 class CustomUser(User):
     user_image = models.ImageField(upload_to='users/images/', blank=True)
+    phone_number = models.CharField(max_length=15, blank=True)
 
 class UserModelForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'username', 'email', 'password', 'confirm_password', 'user_image')
+        fields = ('first_name', 'last_name', 'username', 'email', 'password', 'confirm_password', 'phone_number', 'user_image')
         widgets = {
-            'password': forms.PasswordInput()
+            'password': forms.PasswordInput(),
+            'phone_number': forms.NumberInput()
         }
 
     def clean_first_name(self):
@@ -47,6 +49,14 @@ class UserModelForm(forms.ModelForm):
         if password != confirm_password:
             raise forms.ValidationError("Passwords do not match.")
         return confirm_password
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if not phone_number:
+            raise forms.ValidationError("Phone number field is required.")
+        if not re.match(r'^01[0125][0-9]{8}$', phone_number):
+            raise forms.ValidationError("Please enter a valid phone number.")
+        return phone_number    
 
     def save(self, commit=True):
         self.instance.password = make_password(password=self.instance.password)
