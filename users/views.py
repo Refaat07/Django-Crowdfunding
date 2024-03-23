@@ -23,7 +23,7 @@ def profile(request):
 def create_user(request):
     form = UserModelForm()
     if request.method == 'POST':
-        form = UserModelForm(request.POST)
+        form = UserModelForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
             user.is_active=False

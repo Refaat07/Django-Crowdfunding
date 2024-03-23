@@ -6,7 +6,7 @@ from django.utils import timezone
 import re
 
 class CustomUser(User):
-    user_image = models.ImageField(upload_to='users/images/', blank=True)
+    user_image = models.ImageField(upload_to='users/images', blank=True)
     phone_number = models.CharField(max_length=15, null=True)
     birth_date = models.DateField(null=True, default=timezone.now)
     facebook = models.CharField(max_length=255, null=True)
