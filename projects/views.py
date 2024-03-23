@@ -4,6 +4,9 @@ from django.urls import reverse
 
 
 # Create your views here.
-
-def entry_point(request):
+def entery_point(request):
     return render(request, 'projects/entry_point.html')
+
+def home_index(request):
+    url = reverse('projects.home')
+    return redirect(url)    

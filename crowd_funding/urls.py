@@ -19,10 +19,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from users.views import profile
+from projects.views import home_index
 
 urlpatterns = [
     path('', include('projects.urls')),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
+    path('projectss/', include('projects.urls')),
+    path('accounts/profile/',home_index,  )
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
