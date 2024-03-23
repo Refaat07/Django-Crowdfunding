@@ -19,7 +19,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 
-from projects.views import home_index
+from users.views import profile
+from projects.views import entry_point
 
 urlpatterns = [
     path('', entry_point, name='entry_point'),
@@ -27,5 +28,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('projects/', include('projects.urls')),
-    path('accounts/profile/',home_index,  )
+    path('accounts/profile/',profile,  )
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

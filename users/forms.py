@@ -16,7 +16,6 @@ class UserModelForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'username', 'email', 'password', 'confirm_password', 'phone_number', 'user_image')
         widgets = {
             'password': forms.PasswordInput(),
-            'phone_number': forms.NumberInput()
         }
 
     def clean_first_name(self):

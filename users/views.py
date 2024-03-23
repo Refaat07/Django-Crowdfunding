@@ -16,7 +16,7 @@ from projects.views import entry_point
 # Create your views here.
 
 def profile(request):
-    url = reverse("home")
+    url = reverse('entry_point')
     return redirect(url)
 
 
