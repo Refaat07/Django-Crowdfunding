@@ -18,13 +18,8 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-<<<<<<< HEAD
 
 from projects.views import home_index
-=======
-from projects.views import entry_point
-from users.views import profile
->>>>>>> bc946b3a9be3db24fab3b66c30c855f2a552df95
 
 urlpatterns = [
     path('', entry_point, name='entry_point'),
