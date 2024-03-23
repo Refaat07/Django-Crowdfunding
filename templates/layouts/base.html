@@ -34,21 +34,34 @@
             </li>
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0">
+            {% if user.id %}
+            <!-- <li class="nav-item"><a href="{% url 'profile' %}"></a> Profile</li> -->
             <li class="nav-item">
-              <a class="nav-link fw-bold" href="{% url 'login' %}">Login</a>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <input type="submit" value="logout" class="nav-link" />
+              </form>
             </li>
+
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">login</a>
+            </li>
+            {% endif %}
           </ul>
         </div>
       </div>
     </nav>
 
-    <div>{% include 'partials/messages.html' %}{% block 'content' %} {% endblock %}</div>
+    <div>
+      {% include 'partials/messages.html' %}{% block 'content' %} {% endblock %}
+    </div>
 
     <footer class="footer bg-body-tertiary" id="footer">
       <div class="container py-3 text-center text-dark">
         <p class="mb-1">
-          Copyright 2024 &copy; By <span class="fw-bold">Together We Rise</span> -
-          All Rights Reserved
+          Copyright 2024 &copy; By
+          <span class="fw-bold">Together We Rise</span> - All Rights Reserved
         </p>
       </div>
     </footer>
