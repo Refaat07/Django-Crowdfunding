@@ -70,7 +70,7 @@ class ProjectRating(models.Model):
 class Comment(models.Model):
     content = models.CharField(max_length=255)
     author = models.ForeignKey(User, on_delete = models.CASCADE )
-    project = models.ForeignKey(Project, on_delete = models.CASCADE)
+    project = models.ForeignKey(Project, on_delete = models.CASCADE, related_name='comments')
     reports = models.ManyToManyField(User , through= 'CommentReport', related_name='reported_comments')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)

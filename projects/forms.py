@@ -1,6 +1,7 @@
 
+from typing import Any
 from django import forms
-from projects.models import Project,Category,Tag,User,Picture
+from projects.models import Project,Category,Tag,User,Picture,Comment
 
 class CreateProjectModelForm(forms.ModelForm):
     class Meta:
@@ -76,3 +77,16 @@ class EditProjectModelForm(forms.ModelForm):
             project.save()
 
         return project
+
+class NewCommentModelForm(forms.ModelForm):
+    class Meta:
+        model= Comment
+        fields = ['content']
+        
+    def save(self, commit=True, user=None, project=None):
+        comment = super().save(commit=False)
+        comment.author = user
+        comment.project = project
+
+        if commit:
+            comment.save()

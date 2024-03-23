@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from projects.models import Project,Picture,User,Category,Tag
-from projects.forms import CreateProjectModelForm,EditProjectModelForm
+from projects.models import Project,Picture,User,Category,Tag, Comment
+from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm
 
 # Create your views here.
 def entry_point(request):
@@ -14,7 +14,8 @@ def index(request):
 
 def show(request,id):
     project = Project.objects.get(id=id)
-    return render(request, 'projects/show.html', context= {"project":project})
+    comments = project.comments.all()
+    return render(request, 'projects/show.html', context= {"project":project, "comments": comments, 'newCommentForm': NewCommentModelForm})
 
 @login_required(login_url='/users/login')
 def create(request):
@@ -48,3 +49,13 @@ def delete(request,id):
             return redirect("project.index")
         return redirect("project.index")
     return redirect("project.index")
+
+def addComment(request, id):
+    project = Project.objects.get(id=id)
+    if request.method == 'POST':
+        print('here')
+        form = NewCommentModelForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True, project=project, user=request.user)
+    
+    return redirect('project.show', id=id)

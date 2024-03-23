@@ -26,4 +26,14 @@
   {% endfor %}
   <a href="{% url 'project.index' %}">Back</a>
 </div>
+{% for comment in comments %}
+  <div> {{comment.author}}: {{comment.content}} </div>
+  {% empty %}
+  <p>No comments yet.</p>
+{% endfor %}
+<form method="post" action="{% url 'project.newcomment' project.id %}">
+  <H3>Comment on this project.</H3>
+  {% csrf_token %}  {{ newCommentForm }}
+  <button type="submit" class="btn btn-success my-3">Submit</button>
+</form>
 {% endblock %}
