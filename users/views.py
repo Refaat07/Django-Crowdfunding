@@ -80,3 +80,10 @@ def activate(request, uidb64, token):
 
     return redirect('homepage')
 
+
+def profile_view(request):
+    # Logic to retrieve user profile data
+    # e.g., profile_data = request.user.profile
+
+    return render(request, 'profile.html')
+

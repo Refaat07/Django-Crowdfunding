@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Background color */
+        }
+
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        main {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .card {
+            width: 300px;
+            height: 400px; /* Adjust the height as needed */
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.5s;
+        }
+
+        .card:hover {
+            transform: scale(1.1); /* Enlarge the card on hover */
+        }
+
+        .card-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .card-content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .card-content h2 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+    </header>
+    <main>
+        <section class="profile-cards">
+            <div class="card">
+                <div class="card-content">
+                    <i class="card-icon fas fa-project-diagram"></i> <!-- Font Awesome icon for projects -->
+                    <h2>Projects</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <i class="card-icon fas fa-hand-holding-heart"></i> <!-- Font Awesome icon for donations -->
+                    <h2>Donations</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-content">
+                    <i class="card-icon fas fa-user"></i> <!-- Font Awesome icon for profile -->
+                    <h2>Profile</h2>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Together We Rise. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-MzZdvy2tC0r+k3mNDKsyu7CtW4nDpGNt5e71K2B4fHw+XhU+QvNquDSJ9Xk12IQl+k4edBVccOcBt+4th75rFg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Add any necessary CSS or stylesheets here -->
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+    </header>
+    <main>
+        <section>
+            <!-- Add profile information here -->
+            <h2>Welcome, {{ user.username }}!</h2>
+            <!-- You can display additional profile information here -->
+            <p>Email: {{ user.email }}</p>
+            <!-- Add other profile details as needed -->
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Together We Rise. All Rights Reserved.</p>
+    </footer>
+</body>
+</html> {% endcomment %}
