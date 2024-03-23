@@ -9,6 +9,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <script src="https://kit.fontawesome.com/06c29a99a6.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -30,7 +31,10 @@
         >
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link fw-bold active" aria-current="page">Home</a>
+              <a href="{% url 'entry_point' %}" class="nav-link fw-bold active" aria-current="page">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'project.index' %}" class="nav-link fw-bold">Projects</a>
             </li>
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0">

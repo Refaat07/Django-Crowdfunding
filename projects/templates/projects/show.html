@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
+<div class="container">
+  <h1>{{project.name}}</h1>
+  <h4>Category:</h4>
+  <div class="card mb-3" style="width: 18rem">
+    <img
+      src="{{project.image_url}}"
+      width="300"
+      height="300"
+      class="card-img-top"
+      alt="..."
+    />
+    <div class="card-body">
+      <h5 class="card-title">{{project.no_of_pages}} Pages</h5>
+      <h5 class="card-title">{{project.price}} EGP</h5>
+    </div>
+  </div>
+  {% for image in project.pictures.all %}
+  <img
+    src="{{image}}"
+    width="300"
+    height="300"
+    class="card-img-top"
+    alt="..."
+  />
+  {% endfor %}
+  <a href="{% url 'project.index' %}">Back</a>
+</div>
+{% endblock %}

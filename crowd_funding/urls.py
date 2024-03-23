@@ -18,11 +18,12 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-
+from projects.views import entry_point
 from users.views import profile
 
 urlpatterns = [
-    path('', include('projects.urls')),
+    path('', entry_point, name='entry_point'),
+    path('projects/', include('projects.urls')),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

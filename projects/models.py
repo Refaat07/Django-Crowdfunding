@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.shortcuts import get_object_or_404
 
 
 class Picture(models.Model):
@@ -7,11 +9,19 @@ class Picture(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
-    # def __str__(self):
-    #     return self.path
+    def __str__(self):
+        return self.path.url
+
+    @property
+    def show_url(self):
+        return reverse('project.show', args=[self.id])
+    
+    @classmethod
+    def get_project_by_id(cls, id):
+        return get_object_or_404(cls, id=id)
 
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(unique=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
@@ -19,7 +29,7 @@ class Category(models.Model):
         return self.name
 
 class Tag(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(unique=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
@@ -28,13 +38,13 @@ class Tag(models.Model):
 
 
 class Project(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(unique=True, max_length=100)
     details = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete = models.CASCADE , related_name = 'categories')
     total_target = models.FloatField()
     creator = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'users')
-    tags = models.ManyToManyField(Tag, related_name = 'tags')
-    pictures = models.ManyToManyField(Picture, related_name = 'pictures')
+    tags = models.ManyToManyField(Tag, null=True, blank=True ,related_name = 'tags')
+    pictures = models.ManyToManyField(Picture,null=True, blank=True , related_name = 'pictures')
     ratings = models.ManyToManyField(User, through= 'ProjectRating' , related_name='rated_projects')
     reports = models.ManyToManyField(User , through= 'ProjectReport', related_name='reported_projects')
     campaign_started_at = models.DateTimeField(auto_now=True)
@@ -44,11 +54,18 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+    
+    @property
+    def image_url(self):
+        return f'{self.pictures.first()}'
 
 class ProjectRating(models.Model):
     project = models.ForeignKey(Project, on_delete = models.CASCADE)
     user = models.ForeignKey(User, on_delete = models.CASCADE)
     rating = models.IntegerField()
+
+    def __str__(self):
+        return self.rating
 
 class Comment(models.Model):
     content = models.CharField(max_length=255)
