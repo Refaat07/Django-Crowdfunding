@@ -47,7 +47,8 @@
         }
 
         .card:hover {
-            transform: scale(1.1); /* Enlarge the card on hover */
+            transform: scale(1.1); 
+            
         }
 
         .card-icon {
@@ -62,6 +63,7 @@
 
         .card-content h2 {
             margin: 0;
+            
         }
     </style>
 </head>
@@ -86,7 +88,8 @@
             <div class="card">
                 <div class="card-content">
                     <i class="card-icon fas fa-user"></i> <!-- Font Awesome icon for profile -->
-                    <h2>Profile</h2>
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary" style="color: black; text-decoration: none;"><h2>Profile</h2></a>
+
                 </div>
             </div>
         </section>

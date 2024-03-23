@@ -87,3 +87,13 @@ def profile_view(request):
 
     return render(request, 'profile.html')
 
+def edit_profile(request):
+    if request.method == 'POST':
+        form = UserModelForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the profile page after saving the form
+    else:
+        form = UserModelForm(instance=request.user)
+    return render(request, 'edit_profile.html', {'form': form})
+
