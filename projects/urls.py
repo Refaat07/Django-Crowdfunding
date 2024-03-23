@@ -1,9 +1,10 @@
 from django.urls import path , include
-
-from . import views
+from projects.views import index,create,show,edit,delete
 
 urlpatterns = [
-    path('', views.entry_point, name='entry_point'),
-    path('all', views.viewProjects, name='viewProjects'),
-    path('createNew', views.viewProjects, name='createProject')
+    path('', index, name='project.index'),
+    path('create', create, name='project.create'),
+    path('<int:id>', show, name='project.show'),
+    path('<int:id>/edit', edit, name='project.edit'),
+    path('<int:id>/delete', delete, name='project.delete'),
 ]
