@@ -10,11 +10,11 @@
         enctype="multipart/form-data"
         class="d-flex flex-column gap-3"
       >
-        {% csrf_token %} {{form}} 
+        {% csrf_token %} {{form}}
         <div>
           <p>Existing images</p>
         </div>
-        <div class="d-flex justify-content-center align-items-center gap-2">
+        <div class="d-flex flex-wrap justify-content-center align-items-center gap-2">
           {% for image in form.instance.pictures.all %}
           <img
             src="{{image}}"
@@ -25,7 +25,7 @@
           />
           {% endfor %}
         </div>
-        <div class="d-flex flex-column  gap-2" id="imagesInput">
+        <div class="d-flex flex-column gap-2" id="imagesInput">
           <label for="formFile" class="form-label">Add images</label>
         </div>
         <button type="button" class="btn btn-success my-1" onclick="addInput()">
