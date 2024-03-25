@@ -40,15 +40,15 @@ class Tag(models.Model):
 class Project(models.Model):
     title = models.CharField(unique=True, max_length=100)
     details = models.CharField(max_length=255)
-    category = models.ForeignKey(Category, on_delete = models.CASCADE , related_name = 'categories')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='projects')
     total_target = models.FloatField()
-    creator = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'users')
-    tags = models.ManyToManyField(Tag, null=True, blank=True ,related_name = 'tags')
-    pictures = models.ManyToManyField(Picture,null=True, blank=True , related_name = 'pictures')
-    ratings = models.ManyToManyField(User, through= 'ProjectRating' , related_name='rated_projects')
-    reports = models.ManyToManyField(User , through= 'ProjectReport', related_name='reported_projects')
-    campaign_started_at = models.DateTimeField(auto_now=True)
-    campaign_ended_at = models.DateTimeField(auto_now=True)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_projects')
+    tags = models.ManyToManyField(Tag, blank=True ,related_name = 'projects')
+    pictures = models.ManyToManyField(Picture, blank=True, related_name='projects')
+    ratings = models.ManyToManyField(User, through='ProjectRating', related_name='project_ratings')
+    reports = models.ManyToManyField(User , through='ProjectReport', related_name='project_reports')
+    campaign_start_date = models.DateTimeField()
+    campaign_end_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
@@ -60,8 +60,8 @@ class Project(models.Model):
         return f'{self.pictures.first()}'
 
 class ProjectRating(models.Model):
-    project = models.ForeignKey(Project, on_delete = models.CASCADE)
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_ratings')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rated_projects')
     rating = models.IntegerField()
 
     def __str__(self):
@@ -69,9 +69,9 @@ class ProjectRating(models.Model):
 
 class Comment(models.Model):
     content = models.CharField(max_length=255)
-    author = models.ForeignKey(User, on_delete = models.CASCADE )
-    project = models.ForeignKey(Project, on_delete = models.CASCADE, related_name='comments')
-    reports = models.ManyToManyField(User , through= 'CommentReport', related_name='reported_comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='authored_comments')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='comments')
+    reports = models.ManyToManyField(User, through='CommentReport', related_name='comment_reports')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
@@ -79,16 +79,16 @@ class Comment(models.Model):
         return self.content
 
 class ProjectReport(models.Model):
-    project = models.ForeignKey(Project, on_delete = models.CASCADE)
-    reporter = models.ForeignKey(User, on_delete = models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_reports')
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_projects')
     report_details = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
 
 class CommentReport(models.Model):
-    reporter = models.ForeignKey(User, on_delete = models.CASCADE)
-    comment = models.ForeignKey(Comment, on_delete = models.CASCADE)
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_comments')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='comment_reports')
     report_details = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
