@@ -11,7 +11,8 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from .tokens import account_activation_token
 from projects.views import entry_point 
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from .forms import CustomUser
 
 
 
@@ -89,11 +90,18 @@ def activate(request, uidb64, token):
     return redirect('homepage')
 
 
-def profile_view(request):
-    # Logic to retrieve user profile data
-    # e.g., profile_data = request.user.profile
+# def profile(request):
+#      user = request.user
+#      return render(request, 'profile.html', {'user': user})
 
-    return render(request, 'users/profile.html')
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profile(request):
+    user = request.user
+    return render(request, 'users/profile.html', {'user': user})
 
 def edit_profile(request):
     if request.method == 'POST':
@@ -105,12 +113,25 @@ def edit_profile(request):
         form = UserModelForm(instance=request.user)
     return render(request, 'users/edit_profile.html', {'form': form})
 
+@login_required
+def delete_profile(request):
+    if request.method == 'GET':
+        user = request.user
+        user.delete()
+        return redirect('login')  # Redirect to the login page after deletion
+    else:
+        return HttpResponse(status=405)
+
+
+
 
 def home_index(request):
     user_id = request.user.id
     
-    user = User.objects.get(pk=user_id)
-    # print(user_id)
-    # print(user.username)
-    # print(last_user.pk)
-    return HttpResponse("Success!", status=200)
+    user = CustomUser.objects.get(pk=user_id)
+    # print(user.)
+    image_url = user.user_image.url if user and user.user_image else None
+    print(image_url)
+    
+    # Pass the image link to the HTML template
+    return render(request, 'projects\entry_point.html', {'image_url':image_url})

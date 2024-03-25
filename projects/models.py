@@ -1,7 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from users.models import CustomUser
+
 
 
 class Picture(models.Model):
@@ -42,11 +44,11 @@ class Project(models.Model):
     details = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete = models.CASCADE , related_name = 'categories')
     total_target = models.FloatField()
-    creator = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'users')
+    creator = models.ForeignKey(CustomUser, on_delete = models.CASCADE, related_name = 'users')
     tags = models.ManyToManyField(Tag, null=True, blank=True ,related_name = 'tags')
     pictures = models.ManyToManyField(Picture,null=True, blank=True , related_name = 'pictures')
-    ratings = models.ManyToManyField(User, through= 'ProjectRating' , related_name='rated_projects')
-    reports = models.ManyToManyField(User , through= 'ProjectReport', related_name='reported_projects')
+    ratings = models.ManyToManyField(CustomUser, through= 'ProjectRating' , related_name='rated_projects')
+    reports = models.ManyToManyField(CustomUser , through= 'ProjectReport', related_name='reported_projects')
     campaign_started_at = models.DateTimeField(auto_now=True)
     campaign_ended_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
@@ -61,7 +63,7 @@ class Project(models.Model):
 
 class ProjectRating(models.Model):
     project = models.ForeignKey(Project, on_delete = models.CASCADE)
-    user = models.ForeignKey(User, on_delete = models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
     rating = models.IntegerField()
 
     def __str__(self):
@@ -69,9 +71,9 @@ class ProjectRating(models.Model):
 
 class Comment(models.Model):
     content = models.CharField(max_length=255)
-    author = models.ForeignKey(User, on_delete = models.CASCADE )
+    author = models.ForeignKey(CustomUser, on_delete = models.CASCADE )
     project = models.ForeignKey(Project, on_delete = models.CASCADE, related_name='comments')
-    reports = models.ManyToManyField(User , through= 'CommentReport', related_name='reported_comments')
+    reports = models.ManyToManyField(CustomUser , through= 'CommentReport', related_name='reported_comments')
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
@@ -80,14 +82,14 @@ class Comment(models.Model):
 
 class ProjectReport(models.Model):
     project = models.ForeignKey(Project, on_delete = models.CASCADE)
-    reporter = models.ForeignKey(User, on_delete = models.CASCADE)
+    reporter = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
     report_details = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
 
 class CommentReport(models.Model):
-    reporter = models.ForeignKey(User, on_delete = models.CASCADE)
+    reporter = models.ForeignKey(CustomUser, on_delete = models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete = models.CASCADE)
     report_details = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)

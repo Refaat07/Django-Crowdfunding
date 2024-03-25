@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from projects.models import Project,Picture,User,Category,Tag, Comment
+from projects.models import Project,Picture,Category,Tag, Comment
 from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm
 
 # Create your views here.

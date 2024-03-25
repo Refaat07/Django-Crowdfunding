@@ -22,7 +22,9 @@
                         <a href="{% url 'project.index' %}" class="nav-link fw-bold">Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'profile' %}" class="nav-link fw-bold">Profile</a>
+                        <a href="{% url 'profile' %}"> <!-- Replace "destination.html" with the URL of the HTML file you want to redirect to -->
+                            <img src="/home/{{image_url }}" alt="Description of the image">
+                        </a>
                     </li>
                     {% endif %}
                 </ul>

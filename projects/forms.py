@@ -1,7 +1,7 @@
 
 from typing import Any
 from django import forms
-from projects.models import Project,Category,Tag,User,Picture,Comment
+from projects.models import Project,Category,Tag,Picture,Comment
 
 class CreateProjectModelForm(forms.ModelForm):
     class Meta:

@@ -1,12 +1,14 @@
 from django.urls import path , include
-from users.views import create_user, activate, home_index
-from users.views import profile_view
-from users.views import edit_profile
+from users.views import create_user, activate, home_index,profile,edit_profile, delete_profile
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('register', create_user, name='register'),
     path('activate/<uidb64>/<token>', activate, name='activate'),
-    path('profile/', profile_view, name='profile'),
+    path('profile/', profile, name='profile'),
     path('edit-profile/', edit_profile, name='edit_profile'),
+    path('delete-profile/', delete_profile, name='delete_profile'),
+
+
 ]
