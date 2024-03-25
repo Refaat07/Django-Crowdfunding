@@ -24,7 +24,7 @@
     alt="..."
   />
   {% endfor %}
-  <a href="{% url 'project.index' %}">Back</a>
+  <a href="{% url 'project_list' %}">Back</a>
 </div>
 {% for comment in comments %}
   <div> {{comment.author}}: {{comment.content}} </div>
