@@ -1,141 +1,205 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
+
+<div
+  class="container d-flex align-items-center justify-content-center flex-column"
+>
+  <h2 class="fw-bold text-center text-black-50 mb-3">Profile</h2>
+  <div class="row p-0">
+    <div class="col-md-9 w-100 card py-5 rounded-5 shadow-sm">
+      <div class="w-100">
+        <div class="w-100 d-flex align-items-center justify-content-center">
+          <div style="width: 120px; height: 120px; border-radius: 50%">
+            <img
+              src="{{user.user_image}}"
+              alt="userImage"
+              class="rounded-circle"
+            />
+          </div>
+        </div>
+
+        <div
+          class="w-100 pt-3 d-flex flex-column align-items-center justify-content-center"
+        >
+          <p class="fw-bold">
+            Name:
+            <span class="fw-normal"
+              >{{user.first_name}} {{user.last_name}}</span
+            >
+          </p>
+          <p class="fw-bold">
+            Username: <span class="fw-normal">{{user.username}}</span>
+          </p>
+          <p class="fw-bold">
+            Email: <span class="fw-normal">{{user.email}}</span>
+          </p>
+          <p class="fw-bold">
+            Mobile number: <span class="fw-normal">{{user.phone_number}}</span>
+          </p>
+        </div>
+
+        <div class="w-100">
+          <a class="btn btn-light shadow-sm m-3 fw-bold text-black-50" href="#">
+            View projects
+          </a>
+          <a class="btn btn-light shadow-sm m-3 fw-bold text-black-50" href="#">
+            View Donations
+          </a>
+          <a
+            class="btn btn-light shadow-sm m-3 fw-bold text-black-50"
+            href="{% url 'edit_profile' %}"
+          >
+            Edit profile
+          </a>
+          <a class="btn btn-light shadow-sm m-3 fw-bold text-black-50" href="#">
+            Delete profile
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0; /* Background color */
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0; /* Background color */
+      }
 
-        header {
-            background-color: #343a40;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px 0;
-        }
+      header {
+        background-color: #343a40;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px 0;
+      }
 
-        main {
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-        }
+      main {
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+      }
 
-        .profile-cards {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
+      .profile-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
 
-        .card {
-            width: 300px;
-            height: 400px; /* Adjust the height as needed */
-            background-color: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.5s;
-        }
+      .card {
+        width: 300px;
+        height: 400px; /* Adjust the height as needed */
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.5s;
+      }
 
-        .card:hover {
-            transform: scale(1.1); 
-            
-        }
+      .card:hover {
+        transform: scale(1.1);
+      }
 
-        .card-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-        }
+      .card-icon {
+        font-size: 64px;
+        margin-bottom: 20px;
+      }
 
-        .card-content {
-            text-align: center;
-            z-index: 1;
-        }
+      .card-content {
+        text-align: center;
+        z-index: 1;
+      }
 
-        .card-content h2 {
-            margin: 0;
-            
-        }
+      .card-content h2 {
+        margin: 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>User Profile</h1>
+      <h1>User Profile</h1>
     </header>
     <main>
-        <section class="profile-cards">
-            <div class="card">
-                <div class="card-content">
-                    <i class="card-icon fas fa-project-diagram"></i> <!-- Font Awesome icon for projects -->
-                    <h2>Projects</h2>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-content">
-                    <i class="card-icon fas fa-hand-holding-heart"></i> <!-- Font Awesome icon for donations -->
-                    <h2>Donations</h2>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-content">
-                    <i class="card-icon fas fa-user"></i> <!-- Font Awesome icon for profile -->
-                    <a href="{% url 'edit_profile' %}" class="btn btn-primary" style="color: black; text-decoration: none;"><h2>Profile</h2></a>
-
-                </div>
-            </div>
-        </section>
+      <section class="profile-cards">
+        <div class="card">
+          <div class="card-content">
+            <i class="card-icon fas fa-project-diagram"></i>
+           
+            <h2>Projects</h2>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <i class="card-icon fas fa-hand-holding-heart"></i>
+            
+            <h2>Donations</h2>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+            <i class="card-icon fas fa-user"></i>
+            
+            <a
+              href="{% url 'edit_profile' %}"
+              class="btn btn-primary"
+              style="color: black; text-decoration: none"
+              ><h2>Profile</h2></a
+            >
+          </div>
+        </div>
+      </section>
     </main>
     <footer>
-        <p>&copy; 2024 Together We Rise. All Rights Reserved.</p>
+      <p>&copy; 2024 Together We Rise. All Rights Reserved.</p>
     </footer>
 
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-MzZdvy2tC0r+k3mNDKsyu7CtW4nDpGNt5e71K2B4fHw+XhU+QvNquDSJ9Xk12IQl+k4edBVccOcBt+4th75rFg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</body>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-MzZdvy2tC0r+k3mNDKsyu7CtW4nDpGNt5e71K2B4fHw+XhU+QvNquDSJ9Xk12IQl+k4edBVccOcBt+4th75rFg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </body>
 </html>
-
-
-
-
-
-
-
-
-
-
 
 {% comment %} <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Profile</title>
-    <!-- Add any necessary CSS or stylesheets here -->
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>User Profile</h1>
+      <h1>User Profile</h1>
     </header>
     <main>
-        <section>
-            <!-- Add profile information here -->
-            <h2>Welcome, {{ user.username }}!</h2>
-            <!-- You can display additional profile information here -->
-            <p>Email: {{ user.email }}</p>
-            <!-- Add other profile details as needed -->
-        </section>
+      <section>
+
+        <h2>Welcome, {{ user.username }}!</h2>
+
+        <p>Email: {{ user.email }}</p>
+      </section>
     </main>
     <footer>
-        <p>&copy; 2024 Together We Rise. All Rights Reserved.</p>
+      <p>&copy; 2024 Together We Rise. All Rights Reserved.</p>
     </footer>
-</body>
-</html> {% endcomment %}
+  </body>
+</html>
+{% endcomment %} -->
