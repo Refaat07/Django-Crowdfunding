@@ -11,6 +11,8 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from .tokens import account_activation_token
 from projects.views import entry_point 
+from django.contrib.auth.models import User
+
 
 
 # Create your views here.
@@ -61,6 +63,9 @@ def activateEmail(request, user, to_email):
         print("Unsuccessfull Operation")
 
 
+
+
+
 def activate(request, uidb64, token):
     User = get_user_model()
     try:
@@ -71,7 +76,10 @@ def activate(request, uidb64, token):
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
+        
+        
         user.save()
+        # user.image.save(f'{last_user.pk}.jpg', image_file)
 
         messages.success(request, "Thank you for your email confirmation. Now you can login your account.")
         return redirect('/users/login')
@@ -85,7 +93,7 @@ def profile_view(request):
     # Logic to retrieve user profile data
     # e.g., profile_data = request.user.profile
 
-    return render(request, 'profile.html')
+    return render(request, 'users/profile.html')
 
 def edit_profile(request):
     if request.method == 'POST':
@@ -95,5 +103,14 @@ def edit_profile(request):
             return redirect('profile')  # Redirect to the profile page after saving the form
     else:
         form = UserModelForm(instance=request.user)
-    return render(request, 'edit_profile.html', {'form': form})
+    return render(request, 'users/edit_profile.html', {'form': form})
 
+
+def home_index(request):
+    user_id = request.user.id
+    
+    user = User.objects.get(pk=user_id)
+    # print(user_id)
+    # print(user.username)
+    # print(last_user.pk)
+    return HttpResponse("Success!", status=200)

@@ -20,6 +20,9 @@ class UserModelForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'username', 'email', 'password', 'confirm_password', 'phone_number', 'user_image')
         widgets = {
             'password': forms.PasswordInput(),
+            'birth_date': forms.TextInput(attrs={'type': 'date'}),  
+            'facebook': forms.TextInput(),  
+            'country': forms.TextInput(),   
         }
 
     def clean_first_name(self):

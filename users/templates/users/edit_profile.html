@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <!-- Add Bootstrap or any other CSS framework for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Profile</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <!-- Render form fields with Bootstrap classes for styling -->
+            <div class="form-group">
+                <label for="id_first_name">First Name:</label>
+                {{ form.first_name }}
+            </div>
+            <div class="form-group">
+                <label for="id_last_name">Last Name:</label>
+                {{ form.last_name }}
+            </div>
+            <div class="form-group">
+                <label for="id_username">Username:</label>
+                {{ form.username }}
+            </div>
+            <div class="form-group">
+              <label for="id_email">E-mail:</label>
+              {{ form.email }}
+          </div>
+            <div class="form-group">
+                <label for="id_password">Password:</label>
+                {{ form.password }}
+            </div>
+            <div class="form-group">
+                <label for="id_confirm_password">Confirm Password:</label>
+                {{ form.confirm_password }}
+            </div>
+            <div class="form-group">
+                <label for="id_phone_number">Phone Number:</label>
+                {{ form.phone_number }}
+            </div>
+            <div class="form-group">
+                <label for="id_user_image">Profile Image:</label>
+                {{ form.user_image }}
+            </div>
+            <div class="form-group">
+                <label for="id_birth_date">Birth Date: <input type="text"></label>
+                {{ form.birth_date }}
+            </div>
+            <div class="form-group">
+                <label for="id_facebook">Facebook: <input type="text"> </label>
+                {{ form.facebook }}
+            </div>
+            <div class="form-group">
+                <label for="id_country">Country: <input type="text"></label>
+                {{ form.country }}
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>
