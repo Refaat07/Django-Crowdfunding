@@ -118,7 +118,7 @@ def delete_profile(request):
     if request.method == 'GET':
         user = request.user
         user.delete()
-        return redirect('login')  # Redirect to the login page after deletion
+        return redirect('entry_point')  # Redirect to the login page after deletion
     else:
         return HttpResponse(status=405)
 
