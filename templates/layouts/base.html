@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
     <title>Together We Rise</title>
-<<<<<<< HEAD
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
     <script src="https://kit.fontawesome.com/06c29a99a6.js" crossorigin="anonymous"></script>
 </head>
@@ -44,92 +43,21 @@
                     {% endif %}
                 </ul>
             </div>
-=======
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://kit.fontawesome.com/06c29a99a6.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
-      <div class="container-fluid">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse d-flex justify-content-between"
-          id="navbarSupportedContent"
-        >
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {% if user.id %}
-            <li class="nav-item">
-              <a
-                href="{% url 'entry_point' %}"
-                class="nav-link fw-bold active"
-                aria-current="page"
-                >Home</a
-              >
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'project_list' %}" class="nav-link fw-bold"
-                >Projects</a
-              >
-            </li>
-            <li class="nav-item">
-              <a href="{% url 'profile' %}" class="nav-link fw-bold">Profile</a>
-            </li>
-            {% endif %}
-          </ul>
-          <ul class="navbar-nav mb-2 mb-lg-0">
-            {% if user.id %}
-            <li class="nav-item">
-              <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <input type="submit" value="logout" class="nav-link" />
-              </form>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">login</a>
-            </li>
-            {% endif %}
-          </ul>
->>>>>>> cdbe26706d863847a75678c0ef5f41db91def0b6
         </div>
-      </div>
     </nav>
 
-    <div class="container-fluid py-5 my-4">
-      {% include 'partials/messages.html' %}{% block 'content' %} {% endblock %}
+    <div>
+        {% include 'partials/messages.html' %}{% block 'content' %} {% endblock %}
     </div>
 
-    <footer class="footer bg-body-tertiary fixed-bottom" id="footer">
-      <div class="container py-3 text-center text-dark">
-        <p class="mb-1">
-          Copyright 2024 &copy; By
-          <span class="fw-bold">Together We Rise</span> - All Rights Reserved
-        </p>
-      </div>
+    <footer class="footer bg-body-tertiary" id="footer">
+        <div class="container py-3 text-center text-dark">
+            <p class="mb-1">
+                Copyright 2024 &copy; By <span class="fw-bold">Together We Rise</span> - All Rights Reserved
+            </p>
+        </div>
     </footer>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
 </html>

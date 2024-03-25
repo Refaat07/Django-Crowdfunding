@@ -4,10 +4,9 @@ from django import forms
 from projects.models import Project,Category,Tag,Picture,Comment
 
 class CreateProjectModelForm(forms.ModelForm):
-
     class Meta:
         model= Project
-        fields = ['title', 'details', 'category', 'total_target', 'tags','campaign_start_date','campaign_end_date']
+        fields = ['title', 'details', 'category', 'total_target', 'tags']
 
     # Override the save method to handle associated tags, category, and pictures
     def save(self, commit=True,creator=None):
@@ -40,6 +39,7 @@ class CreateProjectModelForm(forms.ModelForm):
 class EditProjectModelForm(forms.ModelForm):
     class Meta:
         model= Project
+        # fields = '__all__'
         fields = ['title', 'details', 'category', 'total_target', 'tags']
 
     # Override the save method to handle associated tags, category, and pictures

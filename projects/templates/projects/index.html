@@ -1,9 +1,9 @@
 {% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
-<!-- <div class="container">
+<div class="container">
   <div class="d-flex py-4 align-items-center justify-content-between">
     <h1>All Projects</h1>
     <div>
-      <a class="d-inline btn btn-primary" href="{% url 'project_create' %}">Add a project</a>
+      <a class="d-inline btn btn-primary" href="{% url 'project.create' %}">Add a project</a>
     </div>
   </div>
   <div class="list-group mb-4">
@@ -25,13 +25,13 @@
         {% endfor %}
       </div>
       <div>
-        <a class="btn btn-xs btn-primary" href="{% url 'project_show' project.id %}">
+        <a class="btn btn-xs btn-primary" href="{% url 'project.show' project.id %}">
           <span class="fa-solid fa-eye"></span>
         </a>
-        <a class="btn btn-xs btn-success" href="{% url 'project_edit' project.id %}">
+        <a class="btn btn-xs btn-success" href="{% url 'project.edit' project.id %}">
           <span class="fa-solid fa-pen-to-square"></span>
         </a>
-        <a class="btn btn-xs btn-danger" href="{% url 'project_delete' project.id %}">
+        <a class="btn btn-xs btn-danger" href="{% url 'project.delete' project.id %}">
           <span class="fa-solid fa-trash-can"></span>
         </a>
       </div>
@@ -40,62 +40,5 @@
       <div class="text-center">No Projects Found </div>
     {% endfor %}
   </div>
-</div> -->
-
-<div class="container-fluid">
-  <h2 class="fw-bold text-center text-black-50">All Projects</h2>
-  <a
-    href="{% url 'project_create' %}"
-    class="btn btn-light shadow-sm fw-bold text-black-50"
-  >
-    Create New Project
-  </a>
-  <div class="container d-flex justify-content-center">
-    <div class="row p-0 m-0">
-      {% for project in projects %}
-      <a
-        href="{% url 'project_show' project.id %}"
-        class="text-black text-decoration-none"
-      >
-        <div
-          class="card m-2 pt-4 pb-4 text-center shadow-sm rounded-5"
-          style="width: 18rem"
-        >
-          <img
-            src="{{ project.image_url }}"
-            width="180"
-            height="230"
-            class="img-fluid mx-auto rounded-3"
-            alt="book_image"
-          />
-          <div class="card-body pb-0">
-            <p class="fw-bold p-0 mb-1">
-              Project name:
-              <span class="fw-normal">{{project.title}}</span>
-            </p>
-            <p class="fw-bold p-0 mb-1">
-              Category:
-              <span class="fw-normal">{{project.category.name}}</span>
-            </p>
-            <p class="m-0 p-0 fw-bold mb-1">
-              Total target:
-              <span class="fw-normal">{{project.total_target}} EGP</span>
-            </p>
-            <p class="m-0 p-0 fw-bold mb-1">
-              Tags:
-              <span class="btn bg-body-secondary px-2 py-1 me-2"
-                >{% for tag in project.tags.all %} {{tag}} {% endfor %}</span
-              >
-            </p>
-            <small>Created by {{project.creator}} </small>
-          </div>
-        </div>
-      </a>
-      {% empty %}
-      <h2 class="fw-bold text-center my-3 text-black-50">No projects found</h2>
-      {% endfor %}
-    </div>
-  </div>
 </div>
-
 {% endblock %}
