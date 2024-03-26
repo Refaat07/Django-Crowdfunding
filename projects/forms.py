@@ -2,14 +2,36 @@
 from typing import Any
 from django import forms
 from projects.models import Project,Category,Tag,Picture,Comment
+from datetime import datetime
 
 class CreateProjectModelForm(forms.ModelForm):
-    campaign_start_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
-    campaign_end_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    category = forms.ModelChoiceField(Category.objects,widget=forms.Select(attrs={'class': "form-control"}))
+    tags = forms.ModelMultipleChoiceField(Tag.objects,widget=forms.SelectMultiple(attrs={'class': "form-control"}))
+    details = forms.CharField(widget=forms.Textarea(attrs={'class': "form-control","rows":"5"}))
+    total_target = forms.IntegerField(widget=forms.NumberInput(attrs={'class': "form-control"}))
+    campaign_start_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date','class': "form-control"}))
+    campaign_end_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date','class': "form-control"}))
 
     class Meta:
         model= Project
-        fields = ['title', 'details', 'category', 'total_target', 'tags','campaign_start_date','campaign_end_date']
+        fields = ['title', 'category', 'tags', 'details', 'total_target','campaign_start_date','campaign_end_date']
+
+    def clean_campaign_start_date(self):
+        cleaned_data = super().clean()
+        campaign_start_date = cleaned_data.get('campaign_start_date')
+        if campaign_start_date and campaign_start_date < datetime.now().date():
+            raise forms.ValidationError("campaign start date cannot be in the past.")
+        return campaign_start_date
+    
+    def clean_campaign_end_date(self):
+        cleaned_data = super().clean()
+        campaign_end_date = cleaned_data.get('campaign_end_date')
+        if campaign_end_date and campaign_end_date < datetime.now().date():
+            raise forms.ValidationError("campaign end date cannot be in the past.")
+        if campaign_end_date and campaign_end_date < cleaned_data.get('campaign_start_date'):
+            raise forms.ValidationError("campaign end date should be after start date.")
+        return campaign_end_date
 
     # Override the save method to handle associated tags, category, and pictures
     def save(self, commit=True,creator=None):
@@ -40,39 +62,41 @@ class CreateProjectModelForm(forms.ModelForm):
 
 
 class EditProjectModelForm(forms.ModelForm):
-    campaign_start_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
-    campaign_end_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
+    title = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
+    category = forms.ModelChoiceField(Category.objects,widget=forms.Select(attrs={'class': "form-control"}))
+    tags = forms.ModelMultipleChoiceField(Tag.objects,widget=forms.SelectMultiple(attrs={'class': "form-control"}))
+    details = forms.CharField(widget=forms.Textarea(attrs={'class': "form-control","rows":"5"}))
+    total_target = forms.IntegerField(widget=forms.NumberInput(attrs={'class': "form-control"}))
+    campaign_start_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date','class': "form-control"}))
+    campaign_end_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date','class': "form-control"}))
     
     class Meta:
         model= Project
-        fields = ['title', 'details', 'category', 'total_target', 'tags','campaign_start_date','campaign_end_date']
+        fields = ['title', 'category', 'tags', 'details', 'total_target','campaign_start_date','campaign_end_date']
 
+    def clean_campaign_start_date(self):
+        cleaned_data = super().clean()
+        campaign_start_date = cleaned_data.get('campaign_start_date')
+        if campaign_start_date and campaign_start_date < datetime.now().date():
+            raise forms.ValidationError("campaign start date cannot be in the past.")
+        return campaign_start_date
+    
+    def clean_campaign_end_date(self):
+        cleaned_data = super().clean()
+        campaign_end_date = cleaned_data.get('campaign_end_date')
+        if campaign_end_date and campaign_end_date < datetime.now().date():
+            raise forms.ValidationError("campaign end date cannot be in the past.")
+        if campaign_end_date and campaign_end_date < cleaned_data.get('campaign_start_date'):
+            raise forms.ValidationError("campaign end date should be after start date.")
+        return campaign_end_date
+    
     # Override the save method to handle associated tags, category, and pictures
     def save(self, commit=True):
         project = super().save(commit=False)
 
-        project.creator = self.instance.creator 
-
-        # Save associated category
-        category = self.cleaned_data.get('category')
-        project.category = category
-
-        # Retrieve tags from the instance
-        instance_tags = self.instance.tags.all()  # Assuming 'tags' is a ManyToManyField
-
-
-        new_tags = self.cleaned_data.get('tags')
-
-        # Remove tags that are associated with the instance but not in the form submission
-        for tag in instance_tags:
-            if tag not in new_tags:
-                project.tags.remove(tag)
-
-        # Add new tags from the form submission
-        for tag in new_tags:
-            if tag not in instance_tags:
-                project.tags.add(tag)
-
+        # Save associated tags
+        project.tags.set(self.cleaned_data.get('tags'))
+        
         # Save associated images
         for picture in self.files.getlist('pictures'):
             project_picture = Picture.objects.create(path=picture)

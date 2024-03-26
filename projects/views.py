@@ -52,7 +52,7 @@ def edit_project(request, id):
         if request.method == 'POST':
             form = EditProjectModelForm(request.POST, request.FILES, instance=project)
             if form.is_valid():
-                form.save(commit=False)
+                form.save(commit=True)
                 return redirect("project_list")
         return render(request, 'projects/forms/edit.html',context={"form":form})
     return redirect("project_list")
