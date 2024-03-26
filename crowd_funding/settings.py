@@ -27,8 +27,9 @@ SECRET_KEY = 'django-insecure-b^#ot^&oixd5y2rvc$_(niib*sn73tp4%!t2jhk-sjkpeqwhhh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["noted-vulture-annually.ngrok-free.app", "localhost", "127.0.0.1"] # new
+CSRF_TRUSTED_ORIGINS = ["https://noted-vulture-annually.ngrok-free.app"] # new
 
 # Application definition
 
@@ -125,7 +126,7 @@ AUTH_USER_MODEL = 'users.CustomUser'
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [BASE_DIR / "static"]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -145,5 +146,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'aisha.galal.bendary@gmail.com'
 EMAIL_FROM = 'aisha.galal.bendary@gmail.com'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = 'ngwo ysoy ucsj aukt'#os.getenv('EMAIL_HOST_PASSWORD')
 PASSWORD_RESET_TIMEOUT = 86400

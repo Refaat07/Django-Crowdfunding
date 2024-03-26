@@ -1,0 +1,33 @@
+/* Define the star icons */
+label.star:before {
+  content: "\f006";
+  font-family: FontAwesome;
+}
+
+/* Hide the radio inputs */
+.stars input[type="radio"] {
+  display: none;
+}
+
+/* Style the star labels */
+.stars label.star {
+  display: inline-block;
+  font-size: 1rem;
+  padding: 5px;
+  color: #ccc; 
+  cursor: pointer;
+}
+
+/* Style the filled stars */
+.stars input[type="radio"]:checked ~ label.star,
+.stars input[type="radio"]:checked ~ label.star:hover,
+.stars label.star:hover ~ label.star {
+  color: #ffdd00;  /* Fill color of the stars */
+}
+
+/* Fill the hovered star and all stars before it */
+.stars label.star:hover:before,
+.stars input[type="radio"]:hover ~ label.star:before,
+.stars input[type="radio"]:checked ~ label.star:before {
+  content: "\f005";  /* Fill icon (full star) */
+}

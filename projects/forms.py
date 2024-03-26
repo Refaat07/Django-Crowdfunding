@@ -6,7 +6,7 @@ from projects.models import Project,Category,Tag,Picture,Comment
 class CreateProjectModelForm(forms.ModelForm):
     class Meta:
         model= Project
-        fields = ['title', 'details', 'category', 'total_target', 'tags']
+        fields = ['title', 'details', 'category', 'total_target', 'tags','campaign_start_date','campaign_end_date']
 
     # Override the save method to handle associated tags, category, and pictures
     def save(self, commit=True,creator=None):
