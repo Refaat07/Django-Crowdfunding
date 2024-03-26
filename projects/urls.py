@@ -43,7 +43,9 @@ urlpatterns = [
     path('<int:project_id>/ratings/<int:rating_id>/edit/', edit_rating, name='rating_edit'),
     path('<int:project_id>/ratings/<int:rating_id>/delete/', delete_rating, name='rating_delete'),
 
+    #Refaat URLs
     path('<int:id>/newcomment', addComment, name='project.newcomment'),
     path('<int:id>/reportComment/<int:comID>', reportComment, name='project.reportComment'),
-    path('<int:id>/reportProject', reportProject, name='project.reportProject')
+    path('<int:id>/reportProject', reportProject, name='project.reportProject'),
+    path('<int:id>/donate', donate, name='project.donate')
 ]

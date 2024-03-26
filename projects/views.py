@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from projects.models import Project,ProjectRating, Category, Comment, CommentReport, ProjectReport
-from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm
+from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm, DonationForm
 from django.utils import timezone
 from django.db.models import Avg 
 from django.contrib import messages
@@ -206,3 +206,9 @@ def get_category_projects(request, id):
         'category': category,
         'projects_in_category': projects_in_category
     })
+
+# @login_required(login_url='/users/login')
+# def donate(request,id):
+#     project = Project.objects.get(id=id)
+#     if request.method == 'POST':
+#         pass

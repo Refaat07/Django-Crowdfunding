@@ -1,7 +1,7 @@
 
 from typing import Any
 from django import forms
-from projects.models import Project,Category,Tag,Picture,Comment, CommentReport, ProjectReport
+from projects.models import Project,Category,Tag,Picture,Comment, CommentReport, ProjectReport, Donations
 from datetime import datetime
 
 class CreateProjectModelForm(forms.ModelForm):
@@ -137,3 +137,15 @@ class NewProjectReportModelForm(forms.ModelForm):
         report.reporter = reporter
         if commit:
             report.save()
+
+# class DonationForm(forms.ModelForm):
+#     class Meta:
+#         model= Donations
+#         fields = ["amount"]
+    
+#     def save(self, commit=True, project=None, donor = None):
+#         donation = super().save(commit=False)
+#         donation.project = project
+#         donation.donor = donor
+#         if commit:
+#             donation.save()
