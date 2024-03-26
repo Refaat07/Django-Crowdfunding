@@ -10,8 +10,15 @@
         <div class="w-100 d-flex align-items-center justify-content-center">
           <div style="width: 120px; height: 120px; border-radius: 50%">
             <img
-              {% comment %} src="{{image_url }}" alt="Description " {% endcomment %}
-              src = "{{MEDIA_URL}}{{image_url}}" 
+              {%
+              comment
+              %}
+              src="{{image_url }}"
+              alt="Description "
+              {%
+              endcomment
+              %}
+              src="{{MEDIA_URL}}{{image_url}}"
               alt="userImage"
               class="rounded-circle"
             />
@@ -51,7 +58,11 @@
           >
             Edit profile
           </a>
-          <a class="btn btn-light shadow-sm m-3 fw-bold text-black-50" onclick="confirmDelete()" href="#">
+          <a
+            class="btn btn-light shadow-sm m-3 fw-bold text-black-50"
+            onclick="confirmDelete()"
+            href="#"
+          >
             Delete profile
           </a>
         </div>
@@ -60,12 +71,11 @@
   </div>
 </div>
 <script>
-    function confirmDelete() {
-        if (confirm("Are you sure you want to delete your profile?")) {
-            window.location.href = "{% url 'delete_profile' %}";
-        }
+  function confirmDelete() {
+    if (confirm("Are you sure you want to delete your profile?")) {
+      window.location.href = "{% url 'delete_profile' %}";
     }
+  }
 </script>
-
 
 {% endblock %}

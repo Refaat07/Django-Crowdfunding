@@ -166,3 +166,11 @@ def homepage(request):
         'latest_projects': latest_projects,
         'categories': categories
     })
+
+def get_category_projects(request, id):
+    category = get_object_or_404(Category, id=id)
+    projects_in_category = category.get_projects()
+    return render(request, 'projects/categoryProjects.html', {
+        'category': category,
+        'projects_in_category': projects_in_category
+    })

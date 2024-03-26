@@ -5,8 +5,11 @@ urlpatterns = [
     # Home page
     path('', homepage, name='homepage'),
 
+    # Category Projects
+    path('category/<int:id>/', get_category_projects, name='category_projects'),
+
     # Projects URLs
-    path('project_list', list_projects, name='project_list'),
+    path('project_list/', list_projects, name='project_list'),
     path('create/', create_project, name='project_create'),
     path('<int:id>/', show_project, name='project_show'),
     path('<int:id>/edit/', edit_project, name='project_edit'),
