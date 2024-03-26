@@ -4,6 +4,9 @@ from django import forms
 from projects.models import Project,Category,Tag,Picture,Comment
 
 class CreateProjectModelForm(forms.ModelForm):
+    campaign_start_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
+    campaign_end_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
+
     class Meta:
         model= Project
         fields = ['title', 'details', 'category', 'total_target', 'tags','campaign_start_date','campaign_end_date']
@@ -37,10 +40,12 @@ class CreateProjectModelForm(forms.ModelForm):
 
 
 class EditProjectModelForm(forms.ModelForm):
+    campaign_start_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
+    campaign_end_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
+    
     class Meta:
         model= Project
-        # fields = '__all__'
-        fields = ['title', 'details', 'category', 'total_target', 'tags']
+        fields = ['title', 'details', 'category', 'total_target', 'tags','campaign_start_date','campaign_end_date']
 
     # Override the save method to handle associated tags, category, and pictures
     def save(self, commit=True):
