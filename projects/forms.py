@@ -1,7 +1,7 @@
 
 from typing import Any
 from django import forms
-from projects.models import Project,Category,Tag,Picture,Comment
+from projects.models import Project,Category,Tag,Picture,Comment, CommentReport, ProjectReport
 
 class CreateProjectModelForm(forms.ModelForm):
     campaign_start_date = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
@@ -95,3 +95,28 @@ class NewCommentModelForm(forms.ModelForm):
 
         if commit:
             comment.save()
+
+class NewCommentReportModelForm(forms.ModelForm):
+    class Meta:
+        model= CommentReport
+        fields = ["report_details"]
+    
+    def save(self, commit=True, comment=None, reporter = None):
+        report = super().save(commit=False)
+        report.comment = comment
+        report.reporter = reporter
+        if commit:
+            report.save()
+
+
+class NewProjectReportModelForm(forms.ModelForm):
+    class Meta:
+        model= ProjectReport
+        fields = ["report_details"]
+    
+    def save(self, commit=True, project=None, reporter = None):
+        report = super().save(commit=False)
+        report.project = project
+        report.reporter = reporter
+        if commit:
+            report.save()

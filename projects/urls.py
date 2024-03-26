@@ -44,4 +44,6 @@ urlpatterns = [
     path('<int:project_id>/ratings/<int:rating_id>/delete/', delete_rating, name='rating_delete'),
 
     path('<int:id>/newcomment', addComment, name='project.newcomment'),
+    path('<int:id>/reportComment/<int:comID>', reportComment, name='project.reportComment'),
+    path('<int:id>/reportProject', reportProject, name='project.reportProject')
 ]
