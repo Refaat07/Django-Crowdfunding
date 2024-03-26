@@ -5,7 +5,7 @@ from projects.models import Project,ProjectRating, Category, Comment, CommentRep
 from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm
 from django.utils import timezone
 from django.db.models import Avg 
-
+from django.contrib import messages
 
 # Create your views here.
 def entry_point(request):
@@ -43,9 +43,12 @@ def create_project(request):
     if request.method == 'POST':
         form = CreateProjectModelForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save(commit=False,creator=request.user)
+            if form.save(commit=True,creator=request.user):
+                messages.success(request,"Project created successfully")
+            else:
+                messages.error(request,"An error occured")
             return redirect('project_list')
-    return render(request, 'projects/forms/create.html',context={"form":form})
+    return render(request, 'projects/forms/create.html', context={"form": form})
 
 @login_required(login_url='/users/login')
 def edit_project(request, id):
@@ -55,7 +58,10 @@ def edit_project(request, id):
         if request.method == 'POST':
             form = EditProjectModelForm(request.POST, request.FILES, instance=project)
             if form.is_valid():
-                form.save(commit=True)
+                if form.save(commit=True):
+                    messages.success(request,"Project updated successfully")
+                else:
+                    messages.error(request,"An error occured")
                 return redirect("project_list")
         return render(request, 'projects/forms/edit.html',context={"form":form})
     return redirect("project_list")
@@ -65,8 +71,12 @@ def delete_project(request,id):
     project = Project.objects.get(id=id)
     if project.creator.id == request.user.id:
         if project.delete():
-            return redirect("project_list")
+            messages.success(request,"Project updated successfully")
+        else:
+            messages.error(request,"An error occured")
         return redirect("project_list")
+    else:
+        messages.error(request,"you can't delete this project")
     return redirect("project_list")
 
 def list_comments(request):

@@ -38,17 +38,10 @@ class CreateProjectModelForm(forms.ModelForm):
         project = super().save(commit=False)
 
         project.creator = creator
-
-        # Save associated category
-        category = self.cleaned_data.get('category')
-        project.category = category
-
-        # Save associated tags
-        tags = self.cleaned_data.get('tags')
         project.save()
 
-        for tag in tags:
-            project.tags.add(tag)
+        # Save associated tags
+        project.tags.set(self.cleaned_data.get('tags'))
 
         # Save associated images
         for picture in self.files.getlist('pictures'):
