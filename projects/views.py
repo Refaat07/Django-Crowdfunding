@@ -8,8 +8,12 @@ from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommen
 def entry_point(request):
     return render(request, 'projects/entry_point.html')
 
+def homepage(request):
+    return render(request, 'projects/homepage.html')        
+
 def list_projects(request):
     projects = Project.objects.all()
+    print(projects)
     return render(request,'projects/index.html',context={"projects":projects})
 
 def show_project(request,id):
@@ -139,3 +143,5 @@ def addComment(request, id):
             form.save(commit=True, project=project, user=request.user)
     
     return redirect('project_show', id=id)
+
+

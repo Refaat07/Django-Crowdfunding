@@ -10,7 +10,7 @@ from django.core.mail import EmailMessage
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from .tokens import account_activation_token
-from projects.views import entry_point 
+from projects.views import entry_point, homepage 
 # from django.contrib.auth.models import User
 from .forms import CustomUser
 
@@ -19,7 +19,7 @@ from .forms import CustomUser
 # Create your views here.
 
 def profile(request):
-    url = reverse('entry_point')
+    url = reverse('homepage')
     return redirect(url)
 
 
@@ -99,7 +99,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def profile(request):
+def userprofile(request):
     user = request.user
     return render(request, 'users/profile.html', {'user': user})
 
@@ -125,13 +125,13 @@ def delete_profile(request):
 
 
 
-def home_index(request):
-    user_id = request.user.id
+# def home_index(request):
+#     user_id = request.user.id
     
-    user = CustomUser.objects.get(pk=user_id)
-    # print(user.)
-    image_url = user.user_image.url if user and user.user_image else None
-    print(image_url)
+#     user = CustomUser.objects.get(pk=user_id)
+#     # print(user.)
+#     image_url = user.user_image.url if user and user.user_image else None
+#     print(image_url)
     
-    # Pass the image link to the HTML template
-    return render(request, 'projects\entry_point.html', {'image_url':image_url})
+#     # Pass the image link to the HTML template
+#     return render(request, 'projects\entry_point.html', {'image_url':image_url})

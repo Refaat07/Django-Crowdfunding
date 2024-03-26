@@ -2,8 +2,11 @@ from django.urls import path , include
 from projects.views import *
 
 urlpatterns = [
+    # Home page
+    path('', homepage, name='homepage'),
+
     # Projects URLs
-    path('', list_projects, name='project_list'),
+    path('project_list', list_projects, name='project_list'),
     path('create/', create_project, name='project_create'),
     path('<int:id>/', show_project, name='project_show'),
     path('<int:id>/edit/', edit_project, name='project_edit'),
