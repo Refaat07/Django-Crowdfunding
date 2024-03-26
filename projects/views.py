@@ -1,8 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from projects.models import Project,ProjectRating
+from projects.models import Project,ProjectRating, Category
 from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm
+from django.utils import timezone
+from django.db.models import Avg 
+
 
 # Create your views here.
 def entry_point(request):
@@ -145,3 +148,21 @@ def addComment(request, id):
     return redirect('project_show', id=id)
 
 
+
+def homepage(request):
+    current_datetime = timezone.now()
+
+    top_projects = Project.objects.filter(
+        campaign_start_date__lte=current_datetime,
+        campaign_end_date__gte=current_datetime
+    ).annotate(avg_rating=Avg('ratings__project_ratings')).order_by('-avg_rating')[:5]
+
+    latest_projects = Project.objects.order_by('-created_at')[:5]
+
+    categories = Category.objects.all()
+
+    return render(request, 'projects/homepage.html', {
+        'top_projects': top_projects,
+        'latest_projects': latest_projects,
+        'categories': categories
+    })

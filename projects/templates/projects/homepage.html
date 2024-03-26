@@ -1,6 +1,43 @@
 {% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
-<div class="container">
-  <h1>Home page</h1>
-</div>
+    <h1>Welcome to our fundraising app!</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Top Rated Projects:</h3>
+            <div id="topProjectsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for project in top_projects %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <h3>{{ project.title }}</h3>
+                            <p>{{ project.description }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#topProjectsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#topProjectsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Latest Projects:</h3>
+            <ul class="list-group">
+                {% for project in latest_projects %}
+                    <li class="list-group-item">{{ project.title }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
+        <h3>Categories:</h3>
+        <ul>
+            {% for category in categories %}
+                <li><a href="#">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+
+    </div>
 {% endblock %}
+

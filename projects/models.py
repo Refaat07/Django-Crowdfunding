@@ -27,6 +27,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_projects(self):
+        return Project.objects.filter(category=self)
 
 class Tag(models.Model):
     name = models.CharField(unique=True, max_length=100)
