@@ -23,11 +23,26 @@
     class="card-img-top"
     alt="..."
   />
-  {% endfor %} {% for comment in comments %}
-  <div>{{comment.author}}: {{comment.content}}</div>
+  {% endfor %} 
+  <form action="{% url 'project.reportProject' project.id %}" method="post">
+    {% csrf_token %}
+    {{ reportProjectForm }}
+    <input type="submit" value="Report"></input>
+  </form>
+  
+  <a href="{% url 'project_list' %}">Back</a>
+</div>
+{% for comment in comments %}
+  <div> <b>{{comment.author}}:</b> {{comment.content}}
+    <form action="{% url 'project.reportComment' project.id comment.id %}" method="post">
+      {% csrf_token %}
+      {{ reportCommentForm }}
+      <input type="submit" value="Report"></input>
+    </form>
+  </div>
   {% empty %}
   <p>No comments yet.</p>
-  {% endfor %}
+{% endfor %}
   <form method="post" action="{% url 'project.newcomment' project.id %}">
     <h3>Comment on this project.</h3>
     {% csrf_token %} {{ newCommentForm }}

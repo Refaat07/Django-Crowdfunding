@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from projects.models import Project,ProjectRating, Category
-from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm
+from projects.models import Project,ProjectRating, Category, Comment, CommentReport, ProjectReport
+from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm
 from django.utils import timezone
 from django.db.models import Avg 
 
@@ -31,7 +31,10 @@ def show_project(request,id):
         "comments": comments,
         'newCommentForm': NewCommentModelForm,
         "ratings":ratings,
-        "user_current_rating": user_current_rating
+        "user_current_rating": user_current_rating,
+        'newCommentForm': NewCommentModelForm,
+        'reportCommentForm': NewCommentReportModelForm,
+        'reportProjectForm': NewProjectReportModelForm
     })
 
 @login_required(login_url='/users/login')
@@ -147,7 +150,26 @@ def addComment(request, id):
     
     return redirect('project_show', id=id)
 
+@login_required(login_url='/users/login')
+def reportComment(request, id, comID):
+    comment = Comment.objects.get(id=comID)
+    if request.method == 'POST':
+        form = NewCommentReportModelForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True, comment=comment, reporter=request.user)
+    
+    return redirect('project_show', id=id)
 
+
+@login_required(login_url='/users/login')
+def reportProject(request, id):
+    project = Project.objects.get(id=id)
+    if request.method == 'POST':
+        form = NewProjectReportModelForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True, project=project, reporter=request.user)
+    
+    return redirect('project_show', id=id)
 
 def homepage(request):
     current_datetime = timezone.now()
