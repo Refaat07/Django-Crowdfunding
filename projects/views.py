@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.db.models import Avg 
 from django.contrib import messages
 from projects.forms import SearchForm
+from django.db.models import Q
 
 
 # Create your views here.
@@ -228,11 +229,7 @@ def project_search(request):
     if request.method == 'POST':
         query = request.POST.get('search')
         if query:
-            results = Project.objects.filter(title__icontains=query).select_related('pictures').values() 
-            project_list = list(results)
-            print(project_list)
-            return render(request, 'projects/search_results.html', context={'results': project_list, 'query': query})
+            results = Project.objects.filter(Q(title__icontains=query) | Q(tags__name__icontains=query)).prefetch_related('pictures').distinct()
+            return render(request, 'projects/search_results.html', context={'results': list(results), 'query': query})
         else:
             return render(request, 'projects/search_results.html', context={'results': [], 'query': ''})
-
-# | Project.objects.filter(tags__icontains=query)
