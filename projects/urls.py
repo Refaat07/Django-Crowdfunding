@@ -6,7 +6,7 @@ urlpatterns = [
     path('', homepage, name='homepage'),
 
     # Search Projects
-    path('search/', project_search, name='search'),
+    path('search/', project_search, name='project_search'),
 
     # Category Projects
     path('category/<int:id>/', get_category_projects, name='category_projects'),
