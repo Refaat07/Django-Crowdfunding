@@ -106,9 +106,7 @@ def user_profile(request):
     user = CustomUser.objects.get(pk=user_id)
     # print(user.)
     image_url = user.user_image.url if user and user.user_image else None
-    print(image_url)
-    print("asmaa")
-    
+ 
     # Pass the image link to the HTML template
     return render(request, 'users/profile.html', {'user': user, 'image_url':image_url})
 
@@ -121,7 +119,16 @@ def delete_profile(request):
     else:
         return HttpResponse(status=405)
 
+from django.shortcuts import render
+from projects.models import Project
 
+def user_projects(request):
+    # Retrieve projects created by the current user
+    user_projects = Project.objects.filter(creator=request.user)
+    
+    # if user_projects.exists():
+    return render(request, 'users/user_projects.html', {'user_projects': user_projects})
+    
 
 
 # def home_index(request):

@@ -1,5 +1,5 @@
 from django.urls import path , include
-from users.views import create_user, activate, profile, delete_profile, user_profile
+from users.views import create_user, activate, profile, delete_profile, user_profile,user_projects
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -10,6 +10,8 @@ urlpatterns = [
     # path('edit-profile/', edit_profile, name='edit_profile'),
     path('delete-profile/', delete_profile, name='delete_profile'),
     path('user-profile/', user_profile, name='user_profile'),
+    path('user-projects/', user_projects, name='user_projects'),
+
 
 
 

@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
+
+<div class="container-fluid">
+  <h2 class="fw-bold text-center text-black-50">All Projects</h2>
+  
+  <div class="container p-0 d-flex justify-content-center">
+    <div class="row mb-4">
+      {% for project in projects %}
+      <div class="col-md-4">
+        <a
+          href="{% url 'project_show' project.id %}"
+          class="text-black text-decoration-none"
+        >
+          <div
+            class="card m-2 pt-4 pb-4 text-center shadow-sm rounded-5 mb-4"
+            style="width: 20rem"
+          >
+            <img
+              src="{{ project.image_url }}"
+              width="180px"
+              height="230px"
+              class="img-fluid mx-auto rounded-3"
+              alt="project_image"
+            />
+            <div class="card-body pb-0">
+              <p class="fw-bold p-0 mb-1">
+                Project name: <span class="fw-normal">{{project.title}}</span>
+              </p>
+              <p class="fw-bold p-0 mb-1">
+                Category:
+                <span class="fw-normal">{{project.category.name}}</span>
+              </p>
+              <p class="m-0 p-0 fw-bold mb-1">
+                Total target:
+                <span class="fw-normal">{{project.total_target}} EGP</span>
+              </p>
+              <p class="m-0 p-0 fw-bold mb-1">
+                Tags:
+                <span class="btn bg-body-secondary px-2 py-1 me-2"
+                  >{% for tag in project.tags.all %} {{tag}} {% endfor %}</span
+                >
+              </p>
+              <small>Created by {{project.creator}} </small>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <div class="col">
+        <h2 class="fw-bold text-center my-3 text-black-50">
+          No projects found
+        </h2>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
