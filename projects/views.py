@@ -21,6 +21,7 @@ def list_projects(request):
     print(projects)
     return render(request,'projects/index.html',context={"projects":projects})
 
+@login_required(login_url='/users/login')
 def show_project(request,id):
     project = get_object_or_404(Project.objects.prefetch_related('comments', 'project_ratings'), id=id)
     comments = project.comments.all()
@@ -116,6 +117,7 @@ def delete_report(request):
 def list_ratings(request):
     pass
 
+@login_required(login_url='/users/login')
 def create_rating(request,project_id):
     project = get_object_or_404(Project, id=project_id)
     rating_value = request.POST.get('rating')  
@@ -153,7 +155,7 @@ def delete_comment_report(request):
     pass
 
 
-
+@login_required(login_url='/users/login')
 def addComment(request, id):
     project = Project.objects.get(id=id)
     if request.method == 'POST':

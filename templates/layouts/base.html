@@ -35,7 +35,6 @@
           id="navbarSupportedContent"
         >
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {% if user.id %}
             <li class="nav-item">
               <a
                 href="{% url 'homepage' %}"
@@ -44,12 +43,13 @@
                 >Home</a
               >
             </li>
-            <li class="nav-item">
+            <li class="nav-item fw-semibold">
               <a href="{% url 'project_list' %}" class="nav-link fw-bold"
                 >Projects</a
               >
             </li>
-            <li class="nav-item">
+            {% if user.id %}
+            <li class="nav-item fw-semibold">
               <a href="{% url 'user_profile' %}" class="nav-link fw-bold"
                 >Profile</a
               >
@@ -58,7 +58,7 @@
           </ul>
           <ul class="navbar-nav mb-2 mb-lg-0">
             {% if user.id %}
-            <li class="nav-item">
+            <li class="nav-item fw-semibold">
               <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <input type="submit" value="logout" class="nav-link" />
@@ -66,7 +66,7 @@
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">login</a>
+              <a class="nav-link fw-semibold" href="{% url 'login' %}">login</a>
             </li>
             {% endif %}
           </ul>
