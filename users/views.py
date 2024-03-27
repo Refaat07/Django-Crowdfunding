@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from users.forms import UserModelForm
@@ -21,7 +22,6 @@ from .forms import CustomUser
 def profile(request):
     url = reverse('homepage')
     return redirect(url)
-
 
 def create_user(request):
     form = UserModelForm()
@@ -64,9 +64,6 @@ def activateEmail(request, user, to_email):
         print("Unsuccessfull Operation")
 
 
-
-
-
 def activate(request, uidb64, token):
     User = get_user_model()
     try:
@@ -77,11 +74,8 @@ def activate(request, uidb64, token):
 
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
-        
-        
         user.save()
         # user.image.save(f'{last_user.pk}.jpg', image_file)
-
         messages.success(request, "Thank you for your email confirmation. Now you can login your account.")
         return redirect('/users/login')
     else:
@@ -95,10 +89,7 @@ def activate(request, uidb64, token):
 #      return render(request, 'profile.html', {'user': user})
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-
-@login_required
+@login_required(login_url='/users/login')
 def user_profile(request):
     user = request.user
     user_id = request.user.id
@@ -110,12 +101,12 @@ def user_profile(request):
     # Pass the image link to the HTML template
     return render(request, 'users/profile.html', {'user': user, 'image_url':image_url})
 
-@login_required
+@login_required(login_url='/users/login')
 def delete_profile(request):
     if request.method == 'GET':
         user = request.user
         user.delete()
-        return redirect('entry_point') 
+        return redirect('homepage') 
     else:
         return HttpResponse(status=405)
 

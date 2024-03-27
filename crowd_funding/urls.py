@@ -23,10 +23,10 @@ from django.conf.urls.static import static
 
 
 from users.views import profile
-from projects.views import entry_point
+from projects.views import homepage
 
 urlpatterns = [
-    path('', entry_point, name='entry_point'),
+    path('', homepage, name='homepage'),
     path('projects/', include('projects.urls')),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),

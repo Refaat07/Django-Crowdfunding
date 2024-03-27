@@ -3,7 +3,7 @@ from projects.views import *
 
 urlpatterns = [
     # Home page
-    path('', homepage, name='homepage'),
+    # path('', homepage, name='homepage'),
 
     # Search Projects
     path('search/', project_search, name='project_search'),
@@ -12,7 +12,7 @@ urlpatterns = [
     path('category/<int:id>/', get_category_projects, name='category_projects'),
 
     # Projects URLs
-    path('project_list/', list_projects, name='project_list'),
+    path('', list_projects, name='project_list'),
     path('create/', create_project, name='project_create'),
     path('<int:id>/', show_project, name='project_show'),
     path('<int:id>/edit/', edit_project, name='project_edit'),
