@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from projects.models import Project,ProjectRating, Category, Comment, CommentReport, ProjectReport
-from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm, DonationForm
+from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm
 from django.utils import timezone
 from django.db.models import Avg 
 from django.contrib import messages
@@ -26,7 +26,7 @@ def show_project(request,id):
     user_current_rating = ratings.filter(user=request.user).first()
     if user_current_rating:
         user_current_rating = user_current_rating.rating
-    return render(request, 'projects/show.html',context={
+    return render(request, 'projects/showProject.html',context={
         "project":project,
         "comments": comments,
         'newCommentForm': NewCommentModelForm,
