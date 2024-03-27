@@ -1,4 +1,3 @@
-
 from typing import Any
 from django import forms
 from projects.models import Project,Category,Tag,Picture,Comment, CommentReport, ProjectReport, Donations

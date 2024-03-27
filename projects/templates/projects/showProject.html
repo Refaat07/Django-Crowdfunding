@@ -1,0 +1,203 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
+<div class="container">
+  <h1 class="fw-bold text-center text-black-50">{{ project.title }}</h1>
+
+  <div class="row mb-3">
+    {% for image in project.pictures.all %}
+    <div class="col-md-4">
+      <img
+        src="{{ project.image_url }}"
+        class="img-fluid rounded-4"
+        alt="Project Image"
+        width="200px"
+        height="250px"
+      />
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-4">
+    <p class="fw-bold p-0 mb-1">
+      Category:
+      <span class="fw-normal">{{project.category.name}}</span>
+    </p>
+    <p class="m-0 p-0 fw-bold mb-1">
+      Total target:
+      <span class="fw-normal">{{project.total_target}} EGP</span>
+    </p>
+    <p class="m-0 p-0 fw-bold mb-1">
+      Tags:
+      <span class="btn bg-body-secondary px-2 py-1 me-2"
+        >{% for tag in project.tags.all %} {{tag}} {% endfor %}</span
+      >
+    </p>
+    <small>Created by {{project.creator}} </small>
+  </div>
+
+  <div class="mb-4 card py-3 px-4">
+    <h3 class="fw-bold text-black-50 mb-3">Comments</h3>
+    <form method="post" action="{% url 'project.newcomment' project.id %}">
+      <div class="d-flex align-items-center">
+        {% csrf_token %} {{ newCommentForm }}
+        <button
+          type="submit"
+          class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+
+    {% for comment in comments %}
+    <b>{{ comment.author }}:</b> {{ comment.content }}
+    <form
+      action="{% url 'project.reportComment' project.id comment.id %}"
+      method="post"
+    >
+      <div class="d-flex align-items-center">
+        {% csrf_token %} {{ reportCommentForm }}
+        <button
+          type="submit"
+          class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
+        >
+          Report
+        </button>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+
+  <div class="mb-4 card py-3 px-4">
+    <h3 class="fw-bold text-black-50 mb-3">Ratings</h3>
+
+    <div class="stars d-flex align-items-center mb-4">
+      <form
+        method="post"
+        action="{% url 'rating_create' project.id %}"
+        id="rating_form"
+        class="d-flex justify-items-center"
+      >
+        {% csrf_token %}
+        <input
+          class="star star-5"
+          id="star-5"
+          type="radio"
+          name="rating"
+          value="5"
+          {%
+          if
+          user_current_rating="5"
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="star star-5" for="star-5"></label>
+
+        <input
+          class="star star-4"
+          id="star-4"
+          type="radio"
+          name="rating"
+          value="4"
+          {%
+          if
+          user_current_rating="4"
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="star star-4" for="star-4"></label>
+
+        <input
+          class="star star-3"
+          id="star-3"
+          type="radio"
+          name="rating"
+          value="3"
+          {%
+          if
+          user_current_rating="3"
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="star star-3" for="star-3"></label>
+
+        <input
+          class="star star-2"
+          id="star-2"
+          type="radio"
+          name="rating"
+          value="2"
+          {%
+          if
+          user_current_rating="2"
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="star star-2" for="star-2"></label>
+
+        <input
+          class="star star-1"
+          id="star-1"
+          type="radio"
+          name="rating"
+          value="1"
+          {%
+          if
+          user_current_rating="1"
+          %}
+          checked
+          {%
+          endif
+          %}
+        />
+        <label class="star star-1" for="star-1"></label>
+
+        <button
+          type="submit"
+          class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
+        >
+          Submit Rating
+        </button>
+      </form>
+    </div>
+
+    {% for rating in ratings %}
+    <span>{{ rating.user }}: {{ rating.rating }}/5</span>
+    {% endfor %}
+  </div>
+
+  <div class="mb-4 card py-3 px-4">
+    <h3 class="fw-bold text-black-50 mb-3">Reports</h3>
+    <form action="{% url 'project.reportProject' project.id %}" method="post">
+      <div class="d-flex align-items-center">
+        {% csrf_token %} {{ reportProjectForm }}
+        <button
+          type="submit"
+          class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
+        >
+          Report
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('input[name="rating"]').forEach((input) =>
+    input.addEventListener("change", function () {
+      document.getElementById("rating_form").submit();
+    })
+  );
+</script>
+{% endblock %}
