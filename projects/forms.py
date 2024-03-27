@@ -107,7 +107,6 @@ class DonationForm(forms.ModelForm):
         donation.donor = donor
         if commit:
             donation.save()
-        
         return donation
 
 class SearchForm(forms.Form):

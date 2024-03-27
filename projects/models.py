@@ -72,6 +72,14 @@ class Project(models.Model):
     def remaining_amount(self):
         return self.total_target - self.amount_raised
 
+    @property
+    def fulfilled(self):
+        return self.total_target <= self.amount_raised
+
+    @property
+    def cancellable(self):
+        return self.amount_raised <= (0.25 * self.total_target)
+
 class ProjectRating(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_ratings')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='rated_projects')

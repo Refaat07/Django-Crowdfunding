@@ -233,3 +233,8 @@ def project_search(request):
             return render(request, 'projects/search_results.html', context={'results': list(results), 'query': query})
         else:
             return render(request, 'projects/search_results.html', context={'results': [], 'query': ''})
+
+def cancelProject(request,id):
+    project = Project.objects.get(id=id)
+    project.delete()            
+    return redirect('project_list')
