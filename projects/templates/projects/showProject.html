@@ -26,6 +26,14 @@
       <span class="fw-normal">{{project.total_target}} EGP</span>
     </p>
     <p class="m-0 p-0 fw-bold mb-1">
+      Amount Raised:
+      <span class="fw-normal">{{project.amount_raised}} EGP</span>
+    </p>
+    <p class="m-0 p-0 fw-bold mb-1">
+      Remaining:
+      <span class="fw-normal">{{project.remaining_amount}} EGP</span>
+    </p>
+    <p class="m-0 p-0 fw-bold mb-1">
       Tags:
       <span class="btn bg-body-secondary px-2 py-1 me-2"
         >{% for tag in project.tags.all %} {{tag}} {% endfor %}</span
@@ -33,7 +41,16 @@
     </p>
     <small>Created by {{project.creator}} </small>
   </div>
-
+  {% if project.creator != user %}
+    <div>
+      <H2>Donate to this cause</H2>
+      <form action="{% url 'project.donate' project.id %}" method="post">
+      {% csrf_token %}
+      {{DonationForm}}
+      <input type="submit" class="btn btn-light shadow-sm fw-bold text-black-50 mx-3">
+      </form>
+    </div>
+    {% endif %}
   <div class="mb-4 card py-3 px-4">
     <h3 class="fw-bold text-black-50 mb-3">Comments</h3>
     <form method="post" action="{% url 'project.newcomment' project.id %}">

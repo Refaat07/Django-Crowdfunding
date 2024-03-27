@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from projects.models import Project,ProjectRating, Category, Comment, CommentReport, ProjectReport
-from projects.forms import CreateOrUpdateProjectModelForm, NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm
+from projects.models import Project,ProjectRating, Category, Comment, CommentReport, ProjectReport, Donations
+from projects.forms import CreateOrUpdateProjectModelForm, NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm, DonationForm
 from django.utils import timezone
 from django.db.models import Avg 
 from django.contrib import messages
@@ -36,7 +36,9 @@ def show_project(request,id):
         "user_current_rating": user_current_rating,
         'newCommentForm': NewCommentModelForm,
         'reportCommentForm': NewCommentReportModelForm,
-        'reportProjectForm': NewProjectReportModelForm
+        'reportProjectForm': NewProjectReportModelForm,
+        'DonationForm': DonationForm,
+        'currentUser': request.user
     })
 
 @login_required(login_url='/users/login')
@@ -209,11 +211,16 @@ def get_category_projects(request, id):
         'projects_in_category': projects_in_category
     })
 
-# @login_required(login_url='/users/login')
-# def donate(request,id):
-#     project = Project.objects.get(id=id)
-#     if request.method == 'POST':
-#         pass
+@login_required(login_url='/users/login')
+def donate(request,id):
+    project = Project.objects.get(id=id)
+    if request.method == 'POST':
+        form = DonationForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True, project=project, donor=request.user)
+            
+    return redirect('project_show', id=id)
+
 
 def project_search(request):
     if request.method == 'POST':

@@ -61,6 +61,16 @@ class Project(models.Model):
     @property
     def image_url(self):
         return f'{self.pictures.first()}'
+    
+    @property
+    def amount_raised(self):
+        donations = self.donations.all()
+        donations_amounts = donations.values_list('amount', flat=True)
+        return sum(donations_amounts)
+    
+    @property
+    def remaining_amount(self):
+        return self.total_target - self.amount_raised
 
 class ProjectRating(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_ratings')

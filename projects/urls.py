@@ -50,5 +50,5 @@ urlpatterns = [
     path('<int:id>/newcomment', addComment, name='project.newcomment'),
     path('<int:id>/reportComment/<int:comID>', reportComment, name='project.reportComment'),
     path('<int:id>/reportProject', reportProject, name='project.reportProject'),
-    # path('<int:id>/donate', donate, name='project.donate')
+    path('<int:id>/donate', donate, name='project.donate')
 ]

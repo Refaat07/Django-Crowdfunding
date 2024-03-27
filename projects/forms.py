@@ -101,12 +101,14 @@ class DonationForm(forms.ModelForm):
         model= Donations
         fields = ["amount"]
     
-    def save(self, commit=True, project=None, donor = None):
+    def save(self, commit=True, project=None, donor=None):
         donation = super().save(commit=False)
         donation.project = project
         donation.donor = donor
         if commit:
             donation.save()
+        
+        return donation
 
 class SearchForm(forms.Form):
     query = forms.CharField(label='Search')
