@@ -99,19 +99,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def userprofile(request):
+def profile(request):
     user = request.user
-    return render(request, 'users/profile.html', {'user': user})
-
-def edit_profile(request):
-    if request.method == 'POST':
-        form = UserModelForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('profile')  # Redirect to the profile page after saving the form
-    else:
-        form = UserModelForm(instance=request.user)
-    return render(request, 'users/edit_profile.html', {'form': form})
+    user_id = request.user.id
+    
+    user = CustomUser.objects.get(pk=user_id)
+    # print(user.)
+    image_url = user.user_image.url if user and user.user_image else None
+    print(image_url)
+    print("asmaa")
+    
+    # Pass the image link to the HTML template
+    return render(request, 'users/profile.html', {'user': user, 'image_url':image_url})
 
 @login_required
 def delete_profile(request):
