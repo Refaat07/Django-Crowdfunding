@@ -115,18 +115,13 @@ def delete_profile(request):
     if request.method == 'GET':
         user = request.user
         user.delete()
-        return redirect('entry_point')  # Redirect to the login page after deletion
+        return redirect('entry_point') 
     else:
         return HttpResponse(status=405)
 
-from django.shortcuts import render
-from projects.models import Project
-
 def user_projects(request):
-    # Retrieve projects created by the current user
     user_projects = Project.objects.filter(creator=request.user)
-    
-    # if user_projects.exists():
+
     return render(request, 'users/user_projects.html', {'user_projects': user_projects})
     
 

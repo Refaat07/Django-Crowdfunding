@@ -49,7 +49,10 @@
     </form>
 
     {% for comment in comments %}
-    <b>{{ comment.author }}:</b> {{ comment.content }}
+    <p class="fw-bold my-2">
+      {{ comment.author }}:
+      <span class="fw-normal"> {{ comment.content }}</span>
+    </p>
     <form
       action="{% url 'project.reportComment' project.id comment.id %}"
       method="post"
