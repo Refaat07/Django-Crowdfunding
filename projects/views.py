@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from projects.models import Project,ProjectRating, Category, Comment, CommentReport, ProjectReport
-from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm, DonationForm
+from projects.forms import NewCommentModelForm,CreateOrUpdateProjectModelForm, NewCommentReportModelForm, NewProjectReportModelForm, DonationForm
 from django.utils import timezone
 from django.db.models import Avg 
 from django.contrib import messages
@@ -39,9 +39,9 @@ def show_project(request,id):
 
 @login_required(login_url='/users/login')
 def create_project(request):
-    form = CreateProjectModelForm()
+    form = CreateOrUpdateProjectModelForm()
     if request.method == 'POST':
-        form = CreateProjectModelForm(request.POST, request.FILES)
+        form = CreateOrUpdateProjectModelForm(request.POST, request.FILES)
         if form.is_valid():
             if form.save(commit=True,creator=request.user):
                 messages.success(request,"Project created successfully")
@@ -53,12 +53,12 @@ def create_project(request):
 @login_required(login_url='/users/login')
 def edit_project(request, id):
     project = Project.objects.get(id=id)
-    form = EditProjectModelForm(instance=project)
+    form = CreateOrUpdateProjectModelForm(instance=project)
     if project.creator.id == request.user.id:
         if request.method == 'POST':
-            form = EditProjectModelForm(request.POST, request.FILES, instance=project)
+            form = CreateOrUpdateProjectModelForm(request.POST, request.FILES, instance=project)
             if form.is_valid():
-                if form.save(commit=True):
+                if form.save(commit=True,creator=request.user):
                     messages.success(request,"Project updated successfully")
                 else:
                     messages.error(request,"An error occured")
@@ -207,8 +207,8 @@ def get_category_projects(request, id):
         'projects_in_category': projects_in_category
     })
 
-# @login_required(login_url='/users/login')
-# def donate(request,id):
-#     project = Project.objects.get(id=id)
-#     if request.method == 'POST':
-#         pass
+@login_required(login_url='/users/login')
+def donate(request,id):
+    project = Project.objects.get(id=id)
+    if request.method == 'POST':
+        pass
