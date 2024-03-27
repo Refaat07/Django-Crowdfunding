@@ -32,7 +32,7 @@ def create_user(request):
             user.is_active=False
             user.save()
             activateEmail(request, user, form.cleaned_data.get('email'))
-            return redirect('entry_point')
+            return redirect('homepage')
             # url = reverse("login")
             # return redirect(url)
         else:
