@@ -6,6 +6,8 @@ from projects.forms import CreateOrUpdateProjectModelForm, NewCommentModelForm, 
 from django.utils import timezone
 from django.db.models import Avg 
 from django.contrib import messages
+from projects.forms import SearchForm
+
 
 # Create your views here.
 def entry_point(request):
@@ -212,3 +214,16 @@ def get_category_projects(request, id):
 #     project = Project.objects.get(id=id)
 #     if request.method == 'POST':
 #         pass
+
+def project_search(request):
+    if request.method == 'POST':
+        query = request.POST.get('search')
+        if query:
+            results = Project.objects.filter(title__icontains=query).select_related('pictures').values() 
+            project_list = list(results)
+            print(project_list)
+            return render(request, 'projects/search_results.html', context={'results': project_list, 'query': query})
+        else:
+            return render(request, 'projects/search_results.html', context={'results': [], 'query': ''})
+
+# | Project.objects.filter(tags__icontains=query)

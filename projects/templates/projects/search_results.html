@@ -1,0 +1,37 @@
+{% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
+<div class="container-fluid">
+  <h2 class="fw-bold text-center text-black-50">Search Results for "{{ query }}"</h2>
+  <div class="container p-0 d-flex justify-content-center">
+    <div class="row mb-4">
+      {% if results %}
+        {% for project in results %}
+        <div class="col-md-4">
+          <a href="{% url 'project_show' project.id %}" class="text-black text-decoration-none">
+            <div class="card m-2 pt-4 pb-4 text-center shadow-sm rounded-5 mb-4" style="width: 20rem">
+              <img src="{{ project.image_url }}" width="180px" height="230px" class="img-fluid mx-auto rounded-3" alt="project_image">
+              <div class="card-body pb-0">
+                <p class="fw-bold p-0 mb-1">
+                  Project Name: <span class="fw-normal">{{ project.title }}</span>
+                </p>
+                <p class="m-0 p-0 fw-bold mb-1">
+                  Total Target: <span class="fw-normal">{{ project.total_target }} EGP</span>
+                </p>
+                <p class="fw-bold p-0 mb-1">
+                  End Date: <span class="fw-normal">{{ project.campaign_end_date }}</span>
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="col">
+          <h2 class="fw-bold text-center my-3 text-black-50">No projects found!</h2>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+

@@ -107,3 +107,6 @@ class DonationForm(forms.ModelForm):
         donation.donor = donor
         if commit:
             donation.save()
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label='Search')
