@@ -2,17 +2,20 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from projects.models import Project,ProjectRating, Category, Comment, CommentReport, ProjectReport
-from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm, DonationForm
+from projects.forms import CreateProjectModelForm,EditProjectModelForm,NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm
 from django.utils import timezone
 from django.db.models import Avg 
 from django.contrib import messages
+##########################################################
+from projects.forms import SearchForm
+
 
 # Create your views here.
 def entry_point(request):
     return render(request, 'projects/entry_point.html')
 
 def homepage(request):
-    return render(request, 'projects/homepage.html')        
+    return render(request, 'projects/homepage.html')
 
 def list_projects(request):
     projects = Project.objects.all()
@@ -212,3 +215,20 @@ def get_category_projects(request, id):
 #     project = Project.objects.get(id=id)
 #     if request.method == 'POST':
 #         pass
+
+#################################################################
+
+def project_search(request):
+    if request.method == 'POST':
+        query = request.POST.get('search')
+        if query:
+            results = Project.objects.filter(title__icontains=query).values()  
+            project_list = list(results)  
+            print(project_list)
+            return render(request, 'projects/search_results.html', context={'results': project_list, 'query': query})
+        else:
+  
+            return render(request, 'projects/search_results.html', context={'results': [], 'query': ''})
+
+#| Project.objects.filter(tags__icontains=query)
+

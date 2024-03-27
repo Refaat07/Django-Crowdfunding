@@ -101,4 +101,4 @@ class Donations(models.Model):
     donor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='donated_to')
     amount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)  

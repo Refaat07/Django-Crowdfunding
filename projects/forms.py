@@ -1,4 +1,3 @@
-
 from typing import Any
 from django import forms
 from projects.models import Project,Category,Tag,Picture,Comment, CommentReport, ProjectReport, Donations
@@ -149,3 +148,8 @@ class NewProjectReportModelForm(forms.ModelForm):
 #         donation.donor = donor
 #         if commit:
 #             donation.save()
+            
+##################################################
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label='Search')
