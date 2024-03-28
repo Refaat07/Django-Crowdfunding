@@ -12,13 +12,6 @@ class Picture(models.Model):
     def __str__(self):
         return self.path.url
 
-    @property
-    def show_url(self):
-        return reverse('project.show', args=[self.id])
-    
-    @classmethod
-    def get_project_by_id(cls, id):
-        return get_object_or_404(cls, id=id)
 
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=100)
@@ -59,6 +52,14 @@ class Project(models.Model):
         return self.title
     
     @property
+    def show_url(self):
+        return reverse('project.show', args=[self.id])
+    
+    @classmethod
+    def get_project_by_id(cls, id):
+        return get_object_or_404(cls, id=id)
+
+    @property
     def image_url(self):
         return f'{self.pictures.first()}'
     
@@ -79,6 +80,10 @@ class Project(models.Model):
     @property
     def cancellable(self):
         return self.amount_raised <= (0.25 * self.total_target)
+    
+    @property
+    def progress_percentage(self):
+        return round((self.amount_raised / self.total_target) * 100)
 
 class ProjectRating(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_ratings')

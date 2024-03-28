@@ -1,67 +1,121 @@
 {% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
 <div class="container">
-  <h1 class="fw-bold text-center text-black-50">{{ project.title }}</h1>
+  <div class="row">
+    <h1 class="mb-4">{{ project.title }}</h1>
+    <div class="col-md-8">
+      <div id="carouselExampleIndicators" class="carousel slide">
+        <ul class="carousel-indicators list-inline mx-auto px-2">
+          {% for image in project.pictures.all %}
+          <li class="list-inline-item {% if forloop.first %}active{% endif %}">
+            <a
+              id="carousel-selector-0"
+              class="selected"
+              data-bs-slide-to="{{forloop.counter0}}"
+              data-bs-target="#carouselExampleIndicators"
+            >
+              <img src="{{image}}" class="rounded" width="50px" height="40px" />
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
 
-  <div class="row mb-3">
-    {% for image in project.pictures.all %}
-    <div class="col-md-4">
-      <img
-        src="{{ image }}"
-        class="img-fluid rounded-4"
-        alt="Project Image"
-        width="200px"
-        height="250px"
-      />
+        <div class="carousel-inner">
+          {% for image in project.pictures.all %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{image}}" class="d-block w-100 rounded" alt="..." />
+          </div>
+          {% endfor %}
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </div>
-    {% endfor %}
-  </div>
-
-  <div class="mb-4">
-    <p class="fw-bold p-0 mb-1">
-      Category:
-      <span class="fw-normal">{{project.category.name}}</span>
-    </p>
-    <p class="m-0 p-0 fw-bold mb-1">
-      Total Target:
-      <span class="fw-normal">{{project.total_target}} EGP</span>
-    </p>
-    <p class="m-0 p-0 fw-bold mb-1">
-      Amount Raised:
-      <span class="fw-normal">{{project.amount_raised}} EGP</span>
-    </p>
-    {% if not project.fulfilled %}
-    <p class="m-0 p-0 fw-bold mb-1">
-      Remaining:
-      <span class="fw-normal">{{project.remaining_amount}} EGP</span>
-    </p>
-    {% endif %}
-    <p class="m-0 p-0 fw-bold mb-1">
-      Tags:
-      <span class="btn bg-body-secondary px-2 py-1 me-2"
-        >{% for tag in project.tags.all %} {{tag}} {% endfor %}</span
+    <div class="d-flex flex-column gap-3 col-md-4">
+      <div>
+        <span class="fw-bold"> {{project.amount_raised}} EGP </span>
+        <span> raised of {{project.total_target}} EGP target </span>
+      </div>
+      <div
+        class="progress"
+        style="background-color: #e6f6ef"
+        role="progressbar"
+        aria-label="progress"
+        aria-valuenow="25"
+        aria-valuemin="0"
+        aria-valuemax="100"
       >
-    </p>
-    <p class="m-0 p-0 fw-bold mb-1">
-      Campaign End Date:
-      <span class="fw-normal">{{project.campaign_end_date}}</span>
-    </p>
-    <small>Created by {{project.creator}} </small>
-  </div>
-  {% if user == project.creator and project.cancellable %}
-  <a href="{% url 'project.cancel' project.id %}" class="btn btn-light shadow-sm fw-bold text-black-50 mx-3" >Cancel project</a>
-  {% endif %}
-  {% if project.fulfilled %}
-    <div><H2>This project has reached its donation target!</H2></div>
-  {% elif project.creator != user %}
-    <div>
-      <H2>Donate to this cause</H2>
-      <form action="{% url 'project.donate' project.id %}" method="post">
-      {% csrf_token %}
-      {{DonationForm}}
-      <input type="submit" class="btn btn-light shadow-sm fw-bold text-black-50 mx-3">
-      </form>
+        <div
+          class="progress-bar bg-success"
+          style="width: {{project.progress_percentage}}%;"
+        >
+          {{project.progress_percentage}}%
+        </div>
+      </div>
+      <div>
+        <span> {{project.donations.count}} donations </span>
+      </div>
+      {% if not project.fulfilled %}
+      <p class="m-0 p-0 fw-bold mb-1">
+        Remaining:
+        <span class="fw-normal">{{project.remaining_amount}} EGP</span>
+      </p>
+      {% endif %}
+      <p class="fw-bold p-0 mb-1">
+        Category:
+        <span class="fw-normal">{{project.category.name}}</span>
+      </p>
+      <p class="m-0 p-0 fw-bold mb-1">
+        Tags:
+        <span class="btn bg-body-secondary px-2 py-1 me-2"
+          >{% for tag in project.tags.all %} {{tag}} {% endfor %}</span
+        >
+      </p>
+      <p class="m-0 p-0 fw-bold mb-1">
+        Campaign End Date:
+        <span class="fw-normal">{{project.campaign_end_date}}</span>
+      </p>
+      <small
+        >Created by {{project.creator}}. {{project.campaign_start_date}}
+      </small>
     </div>
-    {% endif %}
+  </div>
+
+  {% if user == project.creator and project.cancellable %}
+  <a
+    href="{% url 'project.cancel' project.id %}"
+    class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
+    >Cancel project</a
+  >
+  {% endif %} {% if project.fulfilled %}
+  <div><h2>This project has reached its donation target!</h2></div>
+  {% elif project.creator != user %}
+  <div>
+    <h2>Donate to this cause</h2>
+    <form action="{% url 'project.donate' project.id %}" method="post">
+      {% csrf_token %} {{DonationForm}}
+      <input
+        type="submit"
+        class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
+      />
+    </form>
+  </div>
+  {% endif %}
   <div class="mb-4 card py-3 px-4">
     <h3 class="fw-bold text-black-50 mb-3">Comments</h3>
     <form method="post" action="{% url 'project.newcomment' project.id %}">
@@ -221,6 +275,64 @@
         </button>
       </div>
     </form>
+  </div>
+
+
+
+  <div class="pt-5 mt-5">
+    <h3 class="mb-5">{{project.comments.count}} Comments</h3>
+    <ul class="d-flex flex-column gap-5 list-unstyled">
+      {% for comment in comments %}
+        <li class="d-flex gap-4">
+          <div>
+            <img src="/media/{{comment.author.user_image}}" class="rounded-circle" width="50px" height="50px" alt="{{comment.author}}">
+          </div>
+          <div>
+            <h5 class="text-capitalize">{{comment.author}}</h5>
+            <div class="text-black-50">{{comment.created_at}}</div>
+            <p class="mt-3 text-muted">{{comment.content}}</p>
+            <button class="btn btn-sm btn-warning">
+              <i class="fa-solid fa-flag"></i>
+              <span>Report</span>
+            </button>
+            {% if user == comment.author %}
+            <button class="btn btn-sm btn-danger">
+              <i class="fa-solid fa-trash"></i>
+              <span>Delete</span>
+            </button>
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    <!-- END comment-list -->
+    
+    <div class="pt-5">
+      <h3 class="mb-5">Leave a comment</h3>
+      <form action="#" class="p-5 bg-light">
+        <div class="form-group">
+          <label for="name">Name *</label>
+          <input type="text" class="form-control" id="name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" class="form-control" id="email">
+        </div>
+        <div class="form-group">
+          <label for="website">Website</label>
+          <input type="url" class="form-control" id="website">
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
+        </div>
+
+      </form>
+    </div>
   </div>
 </div>
 
