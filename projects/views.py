@@ -8,6 +8,7 @@ from django.db.models import Avg
 from django.contrib import messages
 from projects.forms import SearchForm
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 
 
 # Create your views here.
@@ -97,8 +98,17 @@ def show_comment(request):
 def edit_comment(request):
     pass
 
-def delete_comment(request):
-    pass
+def delete_comment(request,project_id,comment_id):
+    project = get_object_or_404(Project, id=project_id)
+    comment = get_object_or_404(project.comments, id=comment_id)
+
+    if comment.author.id == request.user.id:
+        comment.delete()
+        messages.success(request, "Comment deleted successfully")
+    else:
+        messages.error(request, "You can't delete this comment")
+
+    return redirect(reverse('project_show', args=[project_id]))
 
 def list_reports(request):
     pass

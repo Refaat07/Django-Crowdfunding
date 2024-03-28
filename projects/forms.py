@@ -59,6 +59,7 @@ class CreateOrUpdateProjectModelForm(forms.ModelForm):
         return project
 
 class NewCommentModelForm(forms.ModelForm):
+    content = forms.CharField(widget=forms.Textarea(attrs={'class': "form-control","rows":"2",'placeholder': 'Write a comment'}))
     class Meta:
         model= Comment
         fields = ['content']
