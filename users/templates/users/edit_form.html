@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Edit Profile</h1>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <!-- Render form fields with Bootstrap classes for styling -->
             <div class="form-group">
@@ -26,18 +26,6 @@
                 {{ form.username }}
             </div>
             <div class="form-group">
-              <label for="id_email">E-mail:</label>
-              {{ form.email }}
-          </div>
-            <div class="form-group">
-                <label for="id_password">Password:</label>
-                {{ form.password }}
-            </div>
-            <div class="form-group">
-                <label for="id_confirm_password">Confirm Password:</label>
-                {{ form.confirm_password }}
-            </div>
-            <div class="form-group">
                 <label for="id_phone_number">Phone Number:</label>
                 {{ form.phone_number }}
             </div>
@@ -46,16 +34,24 @@
                 {{ form.user_image }}
             </div>
             <div class="form-group">
-                <label for="id_birth_date">Birth Date: <input type="text"></label>
+                <label for="id_birth_date">Birth Date:</label>
                 {{ form.birth_date }}
             </div>
             <div class="form-group">
-                <label for="id_facebook">Facebook: <input type="text"> </label>
+                <label for="id_facebook">Facebook:</label>
                 {{ form.facebook }}
             </div>
             <div class="form-group">
-                <label for="id_country">Country: <input type="text"></label>
+                <label for="id_country">Country:</label>
                 {{ form.country }}
+            </div>
+            <div class="form-group">
+                <label for="id_password">Password:</label>
+                {{ form.password }}
+            </div>
+            <div class="form-group">
+                <label for="id_confirm_password">Confirm Password:</label>
+                {{ form.confirm_password }}
             </div>
             <button type="submit" class="btn btn-primary">Save Changes</button>
         </form>

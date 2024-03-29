@@ -14,6 +14,10 @@ from .tokens import account_activation_token
 from projects.views import entry_point, homepage 
 # from django.contrib.auth.models import User
 from .forms import CustomUser
+from projects.models import Project
+from .forms import UserEditForm
+
+
 
 
 
@@ -88,6 +92,92 @@ def activate(request, uidb64, token):
 #      user = request.user
 #      return render(request, 'profile.html', {'user': user})
 
+# def edit_profile(request):
+#     if request.method == 'POST':
+#         user_id = request.user.id
+#         user = CustomUser.objects.get(pk=user_id)
+#         form = UserEditForm(request.POST, request.FILES, instance=user)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('profile')
+#     else:  # Handle the GET request separately
+#         user_id = request.user.id
+#         user = CustomUser.objects.get(pk=user_id)
+#         form = UserEditForm(request.POST, instance=user)  # Initialize the form without POST data
+#     return render(request, 'users/edit_form.html', {'form': form})
+
+
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth import login as auth_login, logout as auth_logout
+from django.http import HttpResponseServerError
+
+# def edit_profile(request):
+#     user_id = request.user.id
+#     user = CustomUser.objects.get(pk=user_id)
+
+#     if request.method == 'POST':
+#         form = UserEditForm(request.POST, request.FILES, instance=user)
+#         if form.is_valid():
+#             try:
+#                 # Update user data
+#                 user = form.save(commit=False)
+#                 if form.cleaned_data['password']:
+#                     user.password = make_password(form.cleaned_data['password'])
+#                 user.save()
+
+#                 # Update session data if necessary
+#                 if request.user.is_authenticated:
+#                     auth_login(request, user)
+
+#                 return redirect('profile')
+#             except Exception as e:
+#                 # Log the error for debugging
+#                 print(f"An error occurred while saving the form: {e}")
+#                 return HttpResponseServerError("An error occurred while saving the form.")
+#     else:
+#         form = UserEditForm(instance=user)
+
+#     return render(request, 'users/edit_form.html', {'form': form})
+
+from django.utils import timezone
+
+
+def edit_profile(request):
+    user_id = request.user.id
+    user = CustomUser.objects.get(pk=user_id)
+    now = timezone.now()
+
+
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            try:
+                # Update user data
+                user = form.save(commit=False)
+                if form.cleaned_data['password']:
+                    user.password = make_password(form.cleaned_data['password'])
+                if not form.cleaned_data['country']:
+                    user.country = 'Default'
+                if not form.cleaned_data['facebook']:
+                    user.facebook = 'Default'
+                if not form.cleaned_data['birth_date']:
+                    user.birth_date = now
+                user.save()
+
+                # Update session data if necessary
+                if request.user.is_authenticated:
+                    auth_login(request, user)
+
+                return redirect('profile')
+            except Exception as e:
+                # Log the error for debugging
+                print(f"An error occurred while saving the form: {e}")
+                return HttpResponseServerError("An error occurred while saving the form.")
+    else:
+        form = UserEditForm(instance=user)
+
+    return render(request, 'users/edit_form.html', {'form': form})
+
 
 @login_required(login_url='/users/login')
 def user_profile(request):
@@ -111,7 +201,7 @@ def delete_profile(request):
         return HttpResponse(status=405)
 
 def user_projects(request):
-    user_projects = Project.objects.filter(creator=request.user)
+    user_projects = Project.objects.filter(id=request.user.id)
 
     return render(request, 'users/user_projects.html', {'user_projects': user_projects})
     

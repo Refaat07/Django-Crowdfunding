@@ -35,6 +35,24 @@
           <p class="fw-bold">
             Mobile number: <span class="fw-normal">{{user.phone_number}}</span>
           </p>
+          {% if user.country != 'Default' %}
+          <p class="fw-bold">
+            Country: <span class="fw-normal">{{user.country}}</span>
+          </p>
+          {% endif %}
+          
+          {% if user.facebook != 'Default' %}
+          <p class="fw-bold">
+            Facebook: <span class="fw-normal">{{user.facebook}}</span>
+          </p>
+          {% endif %}
+
+          {% if user.birth_date != now|date:"m/d/Y" %}
+          <p class="fw-bold">
+           Birthdate: <span class="fw-normal">{{ user.birth_date }}</span>
+          </p>
+          {% endif %}
+
         </div>
 
         <div class="w-100">
@@ -46,7 +64,7 @@
           </a>
           <a
             class="btn btn-light shadow-sm m-3 fw-bold text-black-50"
-            href=""
+            href="{% url 'edit_profile' %}"
           >
             Edit profile
           </a>

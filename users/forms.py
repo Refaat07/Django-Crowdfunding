@@ -13,6 +13,33 @@ from .models import CustomUser
 #     facebook = models.CharField(max_length=255, null=True)
 #     country = models.CharField(max_length=20, null=True)
 
+class UserEditForm(forms.ModelForm):
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta:
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'username', 'phone_number', 'password', 'confirm_password','user_image', 'birth_date', 'facebook', 'country')
+        widgets = {
+            'password': forms.PasswordInput(),
+            'birth_date': forms.DateInput(attrs={'type': 'date'}),  # Assuming you want to use a date picker for birth date
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['country'].required = False
+        self.fields['facebook'].required = False
+        self.fields['birth_date'].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+
+        if password != confirm_password:
+            raise forms.ValidationError(
+                "The passwords do not match. Please enter the same password in both fields."
+            )
+
+
 class UserModelForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
