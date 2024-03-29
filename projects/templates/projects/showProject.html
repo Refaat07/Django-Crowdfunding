@@ -2,9 +2,9 @@
 <div class="container">
   <div class="row">
     <h1 class="mb-4">{{ project.title }}</h1>
-    <div class="col-md-8">
-      <div id="carouselExampleIndicators" class="carousel slide">
-        <ul class="carousel-indicators list-inline mx-auto px-2">
+    <div class="col-md-8 rounded-4">
+      <div id="carouselExampleIndicators" class="carousel slide rounded-4">
+        <ul class="carousel-indicators list-inline mx-auto px-2 rounded-4">
           {% for image in project.pictures.all %}
           <li class="list-inline-item {% if forloop.first %}active{% endif %}">
             <a
@@ -19,7 +19,7 @@
           {% endfor %}
         </ul>
 
-        <div class="carousel-inner">
+        <div class="carousel-inner rounded-4">
           {% for image in project.pictures.all %}
           <div class="carousel-item {% if forloop.first %}active{% endif %}">
             <img src="{{image}}" class="d-block w-100 rounded" alt="..." />
@@ -112,10 +112,16 @@
       <small
         >Created by {{project.creator}}. {{project.campaign_start_date}}
       </small>
+
+      {% if user == project.creator %}
+      <a href="{% url 'project_edit' project.id %} " class="btn btn-success"
+        >Edit Project Details</a
+      >
+      {% endif %}
     </div>
   </div>
 
-  <div class="mb-4 card py-3 px-4">
+  <div class="my-4 card py-3 px-4">
     <h3 class="fw-bold text-black-50 mb-3">Ratings</h3>
 
     <div class="stars d-flex align-items-center mb-4">
@@ -517,7 +523,7 @@
   </div>
 </div>
 
- <!-- Donate modal -->
+<!-- Donate modal -->
 <div
   class="modal fade"
   id="donateToProjectForm"
@@ -529,7 +535,9 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header border-bottom-0">
-        <h5 class="modal-title" id="exampleModalLabel">Donate to the project</h5>
+        <h5 class="modal-title" id="exampleModalLabel">
+          Donate to the project
+        </h5>
         <button
           type="button"
           class="btn-close"
@@ -537,13 +545,8 @@
           aria-label="Close"
         ></button>
       </div>
-      <form
-        action="{% url 'project.donate' project.id %}"
-        method="post"
-      >
-        <div class="modal-body">
-            {% csrf_token %} {{DonationForm.amount}}
-        </div>
+      <form action="{% url 'project.donate' project.id %}" method="post">
+        <div class="modal-body">{% csrf_token %} {{DonationForm.amount}}</div>
         <div class="modal-footer border-top-0 d-flex justify-content-center">
           <button
             type="button"

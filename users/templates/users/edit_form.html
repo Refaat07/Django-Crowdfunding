@@ -1,4 +1,3 @@
-
 {% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
 
 <div class="container">
@@ -13,66 +12,71 @@
   </div>
 </div>
 <script src="{% static 'projects/js/script.js' %}"></script>
-{% endblock %}
-
-
-{% comment %} <!DOCTYPE html>
+{% endblock %} {% comment %} <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Edit Profile</title>
     <!-- Add Bootstrap or any other CSS framework for styling -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
     <div class="container">
-        <h1>Edit Profile</h1>
-        <form method="post" action="{% url 'edit_profile' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <!-- Render form fields with Bootstrap classes for styling -->
-            <div class="form-group">
-                <label for="id_first_name">First Name:</label>
-                {{ form.first_name }}
-            </div>
-            <div class="form-group">
-                <label for="id_last_name">Last Name:</label>
-                {{ form.last_name }}
-            </div>
-            <div class="form-group">
-                <label for="id_username">Username:</label>
-                {{ form.username }}
-            </div>
-            <div class="form-group">
-                <label for="id_phone_number">Phone Number:</label>
-                {{ form.phone_number }}
-            </div>
-            <div class="form-group">
-                <label for="id_user_image">Profile Image:</label>
-                {{ form.user_image }}
-            </div>
-            <div class="form-group">
-                <label for="id_birth_date">Birth Date:</label>
-                {{ form.birth_date }}
-            </div>
-            <div class="form-group">
-                <label for="id_facebook">Facebook:</label>
-                {{ form.facebook }}
-            </div>
-            <div class="form-group">
-                <label for="id_country">Country:</label>
-                {{ form.country }}
-            </div>
-            <div class="form-group">
-                <label for="id_password">Password:</label>
-                {{ form.password }}
-            </div>
-            <div class="form-group">
-                <label for="id_confirm_password">Confirm Password:</label>
-                {{ form.confirm_password }}
-            </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-        </form>
+      <h1>Edit Profile</h1>
+      <form
+        method="post"
+        action="{% url 'edit_profile' %}"
+        enctype="multipart/form-data"
+      >
+        {% csrf_token %}
+        <!-- Render form fields with Bootstrap classes for styling -->
+        <div class="form-group">
+          <label for="id_first_name">First Name:</label>
+          {{ form.first_name }}
+        </div>
+        <div class="form-group">
+          <label for="id_last_name">Last Name:</label>
+          {{ form.last_name }}
+        </div>
+        <div class="form-group">
+          <label for="id_username">Username:</label>
+          {{ form.username }}
+        </div>
+        <div class="form-group">
+          <label for="id_phone_number">Phone Number:</label>
+          {{ form.phone_number }}
+        </div>
+        <div class="form-group">
+          <label for="id_user_image">Profile Image:</label>
+          {{ form.user_image }}
+        </div>
+        <div class="form-group">
+          <label for="id_birth_date">Birth Date:</label>
+          {{ form.birth_date }}
+        </div>
+        <div class="form-group">
+          <label for="id_facebook">Facebook:</label>
+          {{ form.facebook }}
+        </div>
+        <div class="form-group">
+          <label for="id_country">Country:</label>
+          {{ form.country }}
+        </div>
+        <div class="form-group">
+          <label for="id_password">Password:</label>
+          {{ form.password }}
+        </div>
+        <div class="form-group">
+          <label for="id_confirm_password">Confirm Password:</label>
+          {{ form.confirm_password }}
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </form>
     </div>
-</body>
-</html> {% endcomment %}
+  </body>
+</html>
+{% endcomment %}

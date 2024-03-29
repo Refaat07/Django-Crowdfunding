@@ -42,9 +42,11 @@
         class="carousel slide"
         data-bs-ride="carousel"
       >
-        <div class="carousel-inner">
+        <div class="carousel-inner px-5">
           {% for project in top_projects %}
-          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div
+            class="carousel-item px-5 {% if forloop.first %}active{% endif %}"
+          >
             <div
               class="card m-2 pt-4 pb-4 text-center shadow-sm rounded-5"
               style="width: 18rem"
