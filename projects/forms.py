@@ -73,6 +73,7 @@ class NewCommentModelForm(forms.ModelForm):
             comment.save()
 
 class NewCommentReportModelForm(forms.ModelForm):
+    report_details = forms.CharField(widget=forms.Textarea(attrs={'class': "form-control","rows":"2",'placeholder': 'Write report reason'}))
     class Meta:
         model= CommentReport
         fields = ["report_details"]
@@ -98,6 +99,7 @@ class NewProjectReportModelForm(forms.ModelForm):
             report.save()
 
 class DonationForm(forms.ModelForm):
+    amount = forms.IntegerField(widget=forms.NumberInput(attrs={'class': "form-control"}))
     class Meta:
         model= Donations
         fields = ["amount"]

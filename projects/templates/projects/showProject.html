@@ -75,6 +75,25 @@
         Remaining:
         <span class="fw-normal">{{project.remaining_amount}} EGP</span>
       </p>
+      {% endif %} {% if user == project.creator and project.cancellable %}
+      <button
+        class="btn btn-sm btn-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#cancelProjectForm"
+      >
+        Cancel project
+      </button>
+
+      {% endif %} {% if project.fulfilled %}
+      <div><h2>This project has reached its donation target!</h2></div>
+      {% elif project.creator != user %}
+      <button
+        class="btn btn-sm btn-success"
+        data-bs-toggle="modal"
+        data-bs-target="#donateToProjectForm"
+      >
+        Donate
+      </button>
       {% endif %}
       <p class="fw-bold p-0 mb-1">
         Category:
@@ -96,26 +115,6 @@
     </div>
   </div>
 
-  {% if user == project.creator and project.cancellable %}
-  <a
-    href="{% url 'project.cancel' project.id %}"
-    class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
-    >Cancel project</a
-  >
-  {% endif %} {% if project.fulfilled %}
-  <div><h2>This project has reached its donation target!</h2></div>
-  {% elif project.creator != user %}
-  <div>
-    <h2>Donate to this cause</h2>
-    <form action="{% url 'project.donate' project.id %}" method="post">
-      {% csrf_token %} {{DonationForm}}
-      <input
-        type="submit"
-        class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
-      />
-    </form>
-  </div>
-  {% endif %}
   <div class="mb-4 card py-3 px-4">
     <h3 class="fw-bold text-black-50 mb-3">Ratings</h3>
 
@@ -254,24 +253,198 @@
             alt="{{comment.author}}"
           />
         </div>
-        <div>
-          <h5 class="text-capitalize">{{comment.author}}</h5>
-          <div class="text-black-50">{{comment.created_at}}</div>
-          <p class="mt-3 text-muted">{{comment.content}}</p>
-          <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-warning">
-              <i class="fa-solid fa-flag"></i>
-              <span>Report</span>
-            </button>
-            {% if user == comment.author %}
-            <form action="comments/{{comment.id}}/delete" method="get">
-              <button type="submit" class="btn btn-sm btn-danger">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="text-capitalize">{{comment.author.get_full_name}}</h5>
+            <div class="d-flex gap-2">
+              <span class="text-black-50">{{comment.created_at}}</span>
+              {% if comment.comment_reports.count %}
+              <span class="text-black-50">.</span>
+              <a
+                class="text-danger"
+                href="#"
+                class="btn btn-sm btn-warning"
+                data-bs-toggle="modal"
+                data-bs-target="#reportCommentshow-{{forloop.counter0}}"
+                >{{comment.comment_reports.count}} reports</a
+              >
+              <div
+                class="modal fade"
+                id="reportCommentshow-{{forloop.counter0}}"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Reports list
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      {% for report in comment.comment_reports.all %}
+                      <div class="d-flex gap-4">
+                        <div>
+                          <img
+                            src="/media/{{report.reporter.user_image}}"
+                            class="rounded-circle"
+                            width="30px"
+                            height="30px"
+                            alt="{{user.user_image}}"
+                          />
+                        </div>
+                        <div class="d-flex flex-column">
+                          <span class="text-capitalize fw-bold text-muted"
+                            >{{report.reporter.get_full_name}}</span
+                          >
+                          <p class="">{{report.report_details}}</p>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <div
+                      class="modal-footer border-top-0 d-flex justify-content-center"
+                    >
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            <p class="mt-3 text-muted">{{comment.content}}</p>
+            <div class="d-flex gap-2">
+              {% if user != comment.author %}
+              <button
+                type="submit"
+                class="btn btn-sm btn-warning"
+                data-bs-toggle="modal"
+                data-bs-target="#reportCommentForm-{{forloop.counter0}}"
+              >
+                <i class="fa-solid fa-flag"></i>
+                <span>Report</span>
+              </button>
+
+              <div
+                class="modal fade"
+                id="reportCommentForm-{{forloop.counter0}}"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Report the comment
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <form
+                      action="{% url 'project.reportComment' project.id comment.id %}"
+                      method="post"
+                    >
+                      <div class="modal-body">
+                        {% csrf_token %} {{ reportCommentForm.report_details }}
+                      </div>
+                      <div
+                        class="modal-footer border-top-0 d-flex justify-content-center"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit" class="btn btn-warning">
+                          Send
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              {% endif %} {% if user == comment.author %}
+              <button
+                type="submit"
+                class="btn btn-sm btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteCommentForm-{{forloop.counter0}}"
+              >
                 <i class="fa-solid fa-trash"></i>
                 <span>Delete</span>
               </button>
-            </form>
+
+              <div
+                class="modal fade"
+                id="deleteCommentForm-{{forloop.counter0}}"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header border-bottom-0">
+                      <h5 class="modal-title" id="exampleModalLabel">
+                        Delete the comment
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <form
+                      action="{% url 'comment_delete' project.id comment.id %}"
+                      method="get"
+                    >
+                      <div class="modal-body">
+                        <p>are you sure ?</p>
+                      </div>
+                      <div
+                        class="modal-footer border-top-0 d-flex justify-content-center"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit" class="btn btn-danger">
+                          Delete
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
           </div>
-          {% endif %}
         </div>
       </li>
       {% endfor %}
@@ -286,7 +459,7 @@
           />
         </div>
         <div>
-          <h5 class="text-capitalize">{{user.username}}</h5>
+          <h5 class="text-capitalize">{{user.get_full_name}}</h5>
           <form
             method="post"
             action="{% url 'project.newcomment' project.id %}"
@@ -304,6 +477,85 @@
         </div>
       </li>
     </ul>
+  </div>
+</div>
+
+<!-- Cancel Project Modal -->
+<div
+  class="modal fade"
+  id="cancelProjectForm"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="exampleModalLabel">Cancel the project</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>are you sure ?</p>
+      </div>
+      <div class="modal-footer border-top-0 d-flex justify-content-center">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <a
+          href="{% url 'project.cancel' project.id %}"
+          class="btn btn-danger shadow-sm fw-bold"
+          >Cancel project</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- Donate modal -->
+<div
+  class="modal fade"
+  id="donateToProjectForm"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header border-bottom-0">
+        <h5 class="modal-title" id="exampleModalLabel">Donate to the project</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        action="{% url 'project.donate' project.id %}"
+        method="post"
+      >
+        <div class="modal-body">
+            {% csrf_token %} {{DonationForm.amount}}
+        </div>
+        <div class="modal-footer border-top-0 d-flex justify-content-center">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-success">Donate</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 <script>
