@@ -2,6 +2,7 @@ from typing import Any
 from django import forms
 from projects.models import Project,Category,Tag,Picture,Comment, CommentReport, ProjectReport, Donations
 from datetime import datetime
+from django.utils import timezone
 
 class CreateOrUpdateProjectModelForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control"}))
@@ -57,6 +58,22 @@ class CreateOrUpdateProjectModelForm(forms.ModelForm):
             project.save()
 
         return project
+
+class EditProjectModelForm(CreateOrUpdateProjectModelForm):
+    def clean_campaign_start_date(self):
+        campaign_start_date = self.cleaned_data.get('campaign_start_date')
+        if campaign_start_date:
+            existing_start_date = self.instance.campaign_start_date
+            print(campaign_start_date)
+            print(self.instance.campaign_start_date)
+            if existing_start_date and campaign_start_date != datetime.date(existing_start_date):
+                if campaign_start_date < timezone.localdate():
+                    raise forms.ValidationError("Campaign start date cannot be in the past.")
+        return campaign_start_date
+
+    class Meta:
+        model = Project
+        fields = ['title', 'category', 'tags', 'details', 'total_target', 'campaign_start_date', 'campaign_end_date']
 
 class NewCommentModelForm(forms.ModelForm):
     content = forms.CharField(widget=forms.Textarea(attrs={'class': "form-control","rows":"2",'placeholder': 'Write a comment'}))

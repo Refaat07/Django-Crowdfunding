@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from projects.models import Project,ProjectRating, Category, Comment, CommentReport, ProjectReport, Donations
-from projects.forms import CreateOrUpdateProjectModelForm, NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm, DonationForm
+from projects.forms import CreateOrUpdateProjectModelForm,EditProjectModelForm, NewCommentModelForm, NewCommentReportModelForm, NewProjectReportModelForm, DonationForm
 from django.utils import timezone
 from django.db.models import Avg 
 from django.contrib import messages
@@ -60,10 +60,10 @@ def create_project(request):
 @login_required(login_url='/users/login')
 def edit_project(request, id):
     project = Project.objects.get(id=id)
-    form = CreateOrUpdateProjectModelForm(instance=project)
+    form = EditProjectModelForm(instance=project)
     if project.creator.id == request.user.id:
         if request.method == 'POST':
-            form = CreateOrUpdateProjectModelForm(request.POST, request.FILES, instance=project)
+            form = EditProjectModelForm(request.POST, request.FILES, instance=project)
             if form.is_valid():
                 if form.save(commit=True,creator=request.user):
                     messages.success(request,"Project updated successfully")
@@ -86,17 +86,6 @@ def delete_project(request,id):
         messages.error(request,"you can't delete this project")
     return redirect("project_list")
 
-def list_comments(request):
-    pass
-
-def create_comment(request):
-    pass
-
-def show_comment(request):
-    pass
-
-def edit_comment(request):
-    pass
 
 def delete_comment(request,project_id,comment_id):
     project = get_object_or_404(Project, id=project_id)
@@ -110,23 +99,6 @@ def delete_comment(request,project_id,comment_id):
 
     return redirect(reverse('project_show', args=[project_id]))
 
-def list_reports(request):
-    pass
-
-def create_report(request):
-    pass
-
-def show_report(request):
-    pass
-
-def edit_report(request):
-    pass
-
-def delete_report(request):
-    pass
-
-def list_ratings(request):
-    pass
 
 @login_required(login_url='/users/login')
 def create_rating(request,project_id):
@@ -140,31 +112,6 @@ def create_rating(request,project_id):
         rating = ProjectRating.objects.create(project=project, user=request.user, rating=rating_value)
     
     return redirect('project_show',id=project_id)
-
-def show_rating(request):
-    pass
-
-def edit_rating(request):
-    pass
-
-def delete_rating(request):
-    pass
-
-def list_comment_reports(request):
-    pass
-
-def create_comment_report(request):
-    pass
-
-def show_comment_report(request):
-    pass
-
-def edit_comment_report(request):
-    pass
-
-def delete_comment_report(request):
-    pass
-
 
 @login_required(login_url='/users/login')
 def addComment(request, id):
