@@ -19,6 +19,7 @@ from projects.views import entry_point, homepage
 from .forms import CustomUser
 from projects.models import Project
 from .forms import UserEditForm
+from projects.models import Donations
 
 
 # Create your views here.
@@ -142,7 +143,14 @@ from django.forms.models import model_to_dict
 def user_projects(request):
     user_projects = Project.objects.filter(id=request.user.id)
     project_list = [model_to_dict(project) for project in user_projects]
-    print(project_list)
+    # print(project_list)
 
     return render(request, 'users/user_projects.html', {'user_projects': project_list})
+
+def user_donations(request):
+    user_donations = Donations.objects.filter(id=request.user.id)
+    donation_list = [model_to_dict(donation) for donation in user_donations]
+    print(donation_list)
+    return render(request, 'users/user_donations.html', {'user_donations': donation_list})
+    
     

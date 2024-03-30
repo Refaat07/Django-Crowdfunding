@@ -1,5 +1,5 @@
 from django.urls import path , include
-from users.views import create_user, activate, profile, delete_profile, user_profile,user_projects,edit_profile
+from users.views import create_user, activate, profile, delete_profile, user_profile,user_projects,edit_profile,user_donations
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -11,6 +11,8 @@ urlpatterns = [
     path('delete-profile/', delete_profile, name='delete_profile'),
     path('user-profile/', user_profile, name='user_profile'),
     path('user-projects/', user_projects, name='user_projects'),
+    path('user-donations/', user_donations, name='user_donations'),
+
 
 
 
