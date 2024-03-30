@@ -11,29 +11,14 @@
           class="card m-2 pt-4 pb-4 text-center shadow-sm rounded-5 mb-4"
           style="width: 20rem"
         >
-          {% for image in donation.pictures.all %}
-          <img
-            src="{% if image.url %}{{ image.url }}{% else %}{{ image }}{% endif %}"
-            width="180px"
-            height="230px"
-            class="img-fluid mx-auto rounded-3"
-            alt="project_image"
-          />
-          {% endfor %}
-          <div class="card-body pb-0">
-            <p class="fw-bold p-0 mb-1">
-              Project name:
-              <span class="fw-normal">{{donation.project_details.title}}</span>
-            </p>
-            <p class="fw-bold p-0 mb-1">
-              Category:
-              <span class="fw-normal">{{donation.category.name}}</span>
-            </p>
-            <p class="m-0 p-0 fw-bold mb-1">
-              Donation Amount:
-              <span class="fw-normal">{{donation.amount}} EGP</span>
-            </p>
-          </div>
+          <p class="fw-bold p-0 mb-1">
+            Project name:
+            <span class="fw-normal">{{donation.project_details.title}}</span>
+          </p>
+          <p class="m-0 p-0 fw-bold mb-1">
+            Donation Amount:
+            <span class="fw-normal">{{donation.amount}} EGP</span>
+          </p>
         </div>
       </div>
       {% empty %}
