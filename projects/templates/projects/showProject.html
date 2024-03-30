@@ -131,98 +131,23 @@
         id="rating_form"
         class="d-flex justify-items-center"
       >
-        {% csrf_token %}
-        <input
-          class="star star-5"
-          id="star-5"
-          type="radio"
-          name="rating"
-          value="5"
-          {%
-          if
-          user_current_rating="5"
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
+        {% csrf_token %} 
+
+        <input class="star star-5" id="star-5" type="radio"name="rating" value="5" {% if user_current_rating == 5 %}checked{%endif%} />
         <label class="star star-5" for="star-5"></label>
 
-        <input
-          class="star star-4"
-          id="star-4"
-          type="radio"
-          name="rating"
-          value="4"
-          {%
-          if
-          user_current_rating="4"
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
+        <input class="star star-4" id="star-4" type="radio"name="rating" value="4" {% if user_current_rating == 4 %}checked{%endif%} />
         <label class="star star-4" for="star-4"></label>
 
-        <input
-          class="star star-3"
-          id="star-3"
-          type="radio"
-          name="rating"
-          value="3"
-          {%
-          if
-          user_current_rating="3"
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
+        <input class="star star-3" id="star-3" type="radio"name="rating" value="3" {% if user_current_rating == 3 %}checked{%endif%} />
         <label class="star star-3" for="star-3"></label>
 
-        <input
-          class="star star-2"
-          id="star-2"
-          type="radio"
-          name="rating"
-          value="2"
-          {%
-          if
-          user_current_rating="2"
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
+        <input class="star star-2" id="star-2" type="radio"name="rating" value="2" {% if user_current_rating == 2 %}checked{%endif%} />
         <label class="star star-2" for="star-2"></label>
 
-        <input
-          class="star star-1"
-          id="star-1"
-          type="radio"
-          name="rating"
-          value="1"
-          {%
-          if
-          user_current_rating="1"
-          %}
-          checked
-          {%
-          endif
-          %}
-        />
+        <input class="star star-1" id="star-1" type="radio"name="rating" value="1" {% if user_current_rating == 1 %}checked{%endif%} />
         <label class="star star-1" for="star-1"></label>
-
-        <button
-          type="submit"
-          class="btn btn-light shadow-sm fw-bold text-black-50 mx-3"
-        >
-          Submit Rating
-        </button>
+        
       </form>
     </div>
 
