@@ -140,17 +140,54 @@ def delete_profile(request):
         return HttpResponse(status=405)
 
 from django.forms.models import model_to_dict
+# def user_projects(request):
+#     user_projects = Project.objects.filter(id=request.user.id)
+#     project_list = [model_to_dict(project) for project in user_projects]
+#     # print(project_list)
+
+#     return render(request, 'users/user_projects.html', {'user_projects': project_list})
+
 def user_projects(request):
     user_projects = Project.objects.filter(id=request.user.id)
-    project_list = [model_to_dict(project) for project in user_projects]
-    # print(project_list)
+    project_list = []
+
+    for project in user_projects:
+        project_dict = model_to_dict(project)
+
+        if project.pictures.exists():
+            first_picture_url = project.pictures.first().path.url
+            project_dict['picture'] = first_picture_url 
+
+        project_tags = [tag.name for tag in project.tags.all()]
+        project_dict['tags'] = project_tags
+
+        project_list.append(project_dict)
+
+    print(project_list)
 
     return render(request, 'users/user_projects.html', {'user_projects': project_list})
 
+
+
+
+
 def user_donations(request):
-    user_donations = Donations.objects.filter(id=request.user.id)
+    # Get user's donations
+    user_donations = Donations.objects.filter(donor_id=request.user.id)
+
     donation_list = [model_to_dict(donation) for donation in user_donations]
-    print(donation_list)
+
+    project_ids = [donation['project'] for donation in donation_list]
+
+    project_details = Project.objects.filter(id__in=project_ids)
+
+    project_details_list = [model_to_dict(project) for project in project_details]
+
+    for donation in donation_list:
+        donation['project_details'] = next((project for project in project_details_list if project['id'] == donation['project']), None)
+
+    print(donation_list)  
+
     return render(request, 'users/user_donations.html', {'user_donations': donation_list})
     
     

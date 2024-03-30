@@ -15,15 +15,14 @@
             class="card m-2 pt-4 pb-4 text-center shadow-sm rounded-5 mb-4"
             style="width: 20rem"
           >
-            {% for image in project.pictures.all %}
-            <img
-              src="{% if image.url %}{{ image.url }}{% else %}{{ image }}{% endif %}"
-              width="180px"
-              height="230px"
-              class="img-fluid mx-auto rounded-3"
-              alt="project_image"
-            />
-            {% endfor %}
+          <img
+          src="{{project.picture}}"
+          width="180px"
+          height="230px"
+          class="img-fluid mx-auto rounded-3"
+          alt="project_image"
+        />
+            
             <div class="card-body pb-0">
               <p class="fw-bold p-0 mb-1">
                 Project name: <span class="fw-normal">{{project.title}}</span>

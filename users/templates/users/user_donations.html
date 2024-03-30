@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %} {% load static %} {% block 'content' %}
 
 <div class="container-fluid">
-  <h2 class="fw-bold text-center text-black-50">All Projects</h2>
+  <h2 class="fw-bold text-center text-black-50 mb-3">All Donations</h2>
 
   <div class="container p-0 d-flex justify-content-center">
     <div class="row mb-4">
@@ -22,25 +22,16 @@
           {% endfor %}
           <div class="card-body pb-0">
             <p class="fw-bold p-0 mb-1">
-              Project name: <span class="fw-normal">{{donation.title}}</span>
+              Project name:
+              <span class="fw-normal">{{donation.project_details.title}}</span>
             </p>
             <p class="fw-bold p-0 mb-1">
               Category:
               <span class="fw-normal">{{donation.category.name}}</span>
             </p>
             <p class="m-0 p-0 fw-bold mb-1">
-              Total target:
-              <span class="fw-normal">{{donation.total_target}} EGP</span>
-            </p>
-            <p class="m-0 p-0 fw-bold mb-1">
-              Tags:
-              <span class="btn bg-body-secondary px-2 py-1 me-2"
-                >{% for tag in donation.tags.all %} {{tag}} {% endfor %}</span
-              >
-            </p>
-            <p class="fw-bold p-0 mb-1">
-              End Date:
-              <span class="fw-normal">{{ donation.campaign_end_date }}</span>
+              Donation Amount:
+              <span class="fw-normal">{{donation.amount}} EGP</span>
             </p>
           </div>
         </div>
