@@ -28,26 +28,10 @@
                 <span class="fw-normal">{{project.title}}</span>
               </p>
               <p class="m-0 p-0 fw-bold mb-1">
-                Total Target:
-                <span class="fw-normal">{{project.total_target}} EGP</span>
-              </p>
-              <p class="m-0 p-0 fw-bold mb-1">
-                Amount Raised:
-                <span class="fw-normal">{{project.amount_raised}} EGP</span>
-              </p>
-              <p class="m-0 p-0 fw-bold mb-1">
-                Remaining:
-                <span class="fw-normal">{{project.remaining_amount}} EGP</span>
-              </p>
-              <p class="m-0 p-0 fw-bold mb-1">
                 Tags:
                 <span class="btn bg-body-secondary px-2 py-1 me-2"
                   >{% for tag in project.tags.all %} {{tag}} {% endfor %}</span
                 >
-              </p>
-              <p class="m-0 p-0 fw-bold mb-1">
-                Campaign End Date:
-                <span class="fw-normal">{{project.campaign_end_date}}</span>
               </p>
               <small>Created by {{project.creator}} </small>
             </div>
